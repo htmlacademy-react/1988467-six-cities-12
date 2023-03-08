@@ -2,9 +2,12 @@ import PlaceCard from '../../components/place-card/place-card';
 
 type MainPageProps = {
   rentalOffersCount: number;
+  placeCardCount: number[];
 }
 
-function MainPage({ rentalOffersCount }: MainPageProps): JSX.Element {
+function MainPage({ rentalOffersCount, placeCardCount }: MainPageProps): JSX.Element {
+  const placeCardList = placeCardCount.map((cardNumber) => <PlaceCard key={cardNumber} />);
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -95,11 +98,7 @@ function MainPage({ rentalOffersCount }: MainPageProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <PlaceCard />
-                <PlaceCard />
-                <PlaceCard />
-                <PlaceCard />
-                <PlaceCard />
+                {placeCardList}
               </div>
             </section>
             <div className="cities__right-section">
