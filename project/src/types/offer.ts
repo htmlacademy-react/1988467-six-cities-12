@@ -1,21 +1,5 @@
 import { Review } from './review';
 
-// export type Picture = {
-//   picture: string;
-// };
-
-// export type Pictures = {
-//   pictures: string[];
-// };
-
-// export type InsideItem = {
-//   insideItem: string;
-// }
-
-// export type InsideList = {
-//   insideList: InsideItem[];
-// }
-
 export type HostUser = {
   avatar: string;
   hostUserName: string;
@@ -36,4 +20,5 @@ export type Offer = {
   hostUser: HostUser;
   description: string;
   review: Review;
+  isFavorite: boolean;
 };

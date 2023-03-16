@@ -1,13 +1,14 @@
 import PlaceCard from '../../components/place-card/place-card';
 import Logo from '../../components/logo/logo';
+import { Offer } from '../../types/offer';
 
 type MainPageProps = {
   rentalOffersCount: number;
-  placeCardCount: number[];
+  offers: Offer[];
 }
 
-function MainPage({ rentalOffersCount, placeCardCount }: MainPageProps): JSX.Element {
-  const placeCardList = placeCardCount.map((cardNumber) => <PlaceCard key={cardNumber} />);
+function MainPage({ rentalOffersCount, offers }: MainPageProps): JSX.Element {
+  const placeCardList = offers.map((offer) => <PlaceCard offer={offer} key={offer.id.toString()} />);
 
   return (
     <div className="page page--gray page--main">
