@@ -7,28 +7,30 @@ import OfferPage from '../../pages/offer-page/offer-page';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
+import { Offer } from '../../types/offer';
 
 type AppScreenProps = {
   rentalOffersCount: number;
-  placeCardCount: number[];
+  offers: Offer[];
 }
 
-function App({ rentalOffersCount, placeCardCount }: AppScreenProps): JSX.Element {
+function App({ rentalOffersCount, offers }: AppScreenProps): JSX.Element {
+
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route path={AppRoute.Main}>
-            <Route index element={<MainPage rentalOffersCount={rentalOffersCount} placeCardCount={placeCardCount} />} />
+            <Route index element={<MainPage rentalOffersCount={rentalOffersCount} offers={offers} />} />
             <Route path={AppRoute.Login} element={<LoginPage />} />
             <Route path={AppRoute.Favorites}
               element={
-                <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
-                  <FavoritesPage />
+                <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+                  <FavoritesPage offers={offers} />
                 </PrivateRoute>
               }
             />
-            <Route path={AppRoute.Room} element={<OfferPage />} />
+            <Route path={AppRoute.Room} element={<OfferPage offers={offers} />} />
           </Route>
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
