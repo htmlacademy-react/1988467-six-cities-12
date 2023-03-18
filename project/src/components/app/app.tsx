@@ -15,6 +15,7 @@ type AppScreenProps = {
 }
 
 function App({ rentalOffersCount, offers }: AppScreenProps): JSX.Element {
+
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -29,7 +30,7 @@ function App({ rentalOffersCount, offers }: AppScreenProps): JSX.Element {
                 </PrivateRoute>
               }
             />
-            <Route path={AppRoute.Room} element={<OfferPage />} />
+            <Route path={AppRoute.Room} element={<OfferPage offers={offers} />} />
           </Route>
           <Route path='*' element={<NotFoundPage />} />
         </Routes>

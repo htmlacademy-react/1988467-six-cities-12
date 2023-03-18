@@ -1,53 +1,68 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
+import { RATINGS } from '../../const';
+
+type FormData = {
+  review: string;
+  rating: number;
+};
+
+type RatingOption = {
+  value: number;
+  title: string;
+};
+
+type RatingProps = {
+  rating: RatingOption;
+  selectedRating: number;
+  onChange(rating: number): void;
+
+};
+
+function Rating({ rating, selectedRating, onChange }: RatingProps) {
+  const id = `${rating.value}-${rating.value > 1 ? 'stars' : 'star'}`;
+  const checked = rating.value <= selectedRating;
+  return (
+    <>
+      <input
+        className="form__rating-input visually-hidden"
+        name="rating"
+        value={rating.value}
+        id={id}
+        type="radio"
+        defaultChecked={checked}
+        onClick={() => onChange(rating.value)}
+      />
+      <label htmlFor={id} className="reviews__rating-label form__rating-label" title={rating.title}>
+        <svg className="form__star-image" width="37" height="33">
+          <use xlinkHref="#icon-star"></use>
+        </svg>
+      </label>
+    </>
+  );
+}
 
 function CommentForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     review: '',
+    rating: 0,
   });
 
-  const commentChangeHandler = (evt) => {
-    const { name, value } = evt.target;
-    setFormData({ ...formData, [name]: value });
+  const commentChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+    setFormData({ ...formData, review: evt.target.value });
   };
+
+  const ratingChangeHandler = (rating: number) => {
+    setFormData({ ...formData, rating });
+  };
+
 
   return (
     <form className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio" />
-        <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-
-        <input className="form__rating-input visually-hidden" name="rating" value="4" id="4-stars" type="radio" />
-        <label htmlFor="4-stars" className="reviews__rating-label form__rating-label" title="good">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-
-        <input className="form__rating-input visually-hidden" name="rating" value="3" id="3-stars" type="radio" />
-        <label htmlFor="3-stars" className="reviews__rating-label form__rating-label" title="not bad">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-
-        <input className="form__rating-input visually-hidden" name="rating" value="2" id="2-stars" type="radio" />
-        <label htmlFor="2-stars" className="reviews__rating-label form__rating-label" title="badly">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-
-        <input className="form__rating-input visually-hidden" name="rating" value="1" id="1-star" type="radio" />
-        <label htmlFor="1-star" className="reviews__rating-label form__rating-label" title="terribly">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
+        {
+          RATINGS.map((rating: RatingOption) => <Rating key={rating.value} rating={rating} selectedRating={formData.rating} onChange={ratingChangeHandler} />)
+        }
       </div>
       <textarea onChange={commentChangeHandler} value={formData.review} className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved">Blabla</textarea>
       <div className="reviews__button-wrapper">

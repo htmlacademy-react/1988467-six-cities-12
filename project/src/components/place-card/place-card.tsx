@@ -1,22 +1,33 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
+import { useState } from 'react';
 
 type PlaceCardProps = {
   offer: Offer;
   key: string;
 }
 
+type ActiveCard = {
+  id: number;
+}
+
 function PlaceCard(props: PlaceCardProps): JSX.Element {
   const { offer, key } = props;
   const { id, pictures, title, mark, apartmentType, rating, price, isFavorite } = offer;
 
+  const [activeCard, setActiveCard] = useState<ActiveCard>({ id: 0 });
+
+  const mouseOverHandler = () => {
+    setActiveCard({ ...activeCard, id });
+  };
+
   return (
-    <article key={key} className="cities__card place-card">
+    <article key={key} className="cities__card place-card" onMouseOver={mouseOverHandler}>
       <div className="place-card__mark">
         <span>{mark}</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/:${id}`}>
+        <Link to={`/offer/${id}`}>
           <img className="place-card__image" src={pictures[0]} width="260" height="200" alt="Place image" />
         </Link>
       </div>

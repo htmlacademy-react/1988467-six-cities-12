@@ -1,9 +1,30 @@
 const RENTAL_OFFERS_COUNT = 312;
-const PLACE_CARD_COUNT = [1, 2, 3, 4, 5];
+
+const RATINGS = [
+  {
+    value: 5,
+    title: 'perfect',
+  },
+  {
+    value: 4,
+    title: 'good',
+  },
+  {
+    value: 3,
+    title: 'not bad',
+  },
+  {
+    value: 2,
+    title: 'badly',
+  },
+  {
+    value: 1,
+    title: 'terribly',
+  },
+];
 
 export const RentalInfo = {
   RentalOffersCount: RENTAL_OFFERS_COUNT,
-  PlaceCardCount: PLACE_CARD_COUNT,
 } as const;
 
 export enum AppRoute {
@@ -18,3 +39,5 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export { RATINGS };

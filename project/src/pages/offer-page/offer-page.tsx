@@ -1,13 +1,27 @@
 import Logo from '../../components/logo/logo';
 import { Helmet } from 'react-helmet-async';
 import CommentForm from '../../components/comment-form/comment-form';
+import { useParams } from 'react-router-dom';
+import { Offer } from '../../types/offer';
 // import { Offer } from '../../types/offer';
 
 // type CommentFormProps = {
-//   offers: Offer[];
+//   offer: Offer;
 // }
 
-function OfferPage(): JSX.Element {
+
+type Props = {
+  offers: Offer[];
+}
+
+function OfferPage({ offers }: Props): JSX.Element {
+
+  const { id: offerId } = useParams<{ id: string }>();
+
+  const offer = offers.find((of) => of.id.toString() === offerId) || {} as Offer;
+
+  const { price, pictures, title, mark, apartmentType, bedrooms, adults, rating, insideList, hostUser, description, review } = offer;
+
   return (
     <div className="page">
       <Helmet>
@@ -42,34 +56,26 @@ function OfferPage(): JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/room.jpg" alt="Photo studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-02.jpg" alt="Photo studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-03.jpg" alt="Photo studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/studio-01.jpg" alt="Photo studio" />
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio" />
-              </div>
+              {
+                pictures.map((picture, index) => {
+                  const keyValue = index.toString();
+                  return (
+                    <div key={keyValue} className="property__image-wrapper">
+                      <img className="property__image" src={picture} alt="Photo studio" />
+                    </div>
+                  );
+                })
+              }
             </div>
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
               <div className="property__mark">
-                <span>Premium</span>
+                <span>{mark}</span>
               </div>
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-                  Beautiful &amp; luxurious studio at great location
+                  {title}
                 </h1>
                 <button className="property__bookmark-button button" type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
@@ -80,77 +86,57 @@ function OfferPage(): JSX.Element {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{ width: '80%' }}></span>
+                  <span style={{ width: `${100 / 5 * Math.round(rating)}%` }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">4.8</span>
+                <span className="property__rating-value rating__value">{rating}</span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  Apartment
+                  {apartmentType}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  3 Bedrooms
+                  {bedrooms}
                 </li>
                 <li className="property__feature property__feature--adults">
-                  Max 4 adults
+                  {adults}
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">&euro;120</b>
+                <b className="property__price-value">&euro;{price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
-                  <li className="property__inside-item">
-                    Wi-Fi
-                  </li>
-                  <li className="property__inside-item">
-                    Washing machine
-                  </li>
-                  <li className="property__inside-item">
-                    Towels
-                  </li>
-                  <li className="property__inside-item">
-                    Heating
-                  </li>
-                  <li className="property__inside-item">
-                    Coffee machine
-                  </li>
-                  <li className="property__inside-item">
-                    Baby seat
-                  </li>
-                  <li className="property__inside-item">
-                    Kitchen
-                  </li>
-                  <li className="property__inside-item">
-                    Dishwasher
-                  </li>
-                  <li className="property__inside-item">
-                    Cabel TV
-                  </li>
-                  <li className="property__inside-item">
-                    Fridge
-                  </li>
+                  {
+                    insideList.map((insideItem, index) => {
+                      const keyValue = index.toString();
+                      return (
+                        <li key={keyValue} className="property__inside-item">
+                          {insideItem}
+                        </li>
+                      );
+                    })
+                  }
                 </ul>
               </div>
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar" />
+                    <img className="property__avatar user__avatar" src={hostUser.avatar} width="74" height="74" alt="Host avatar" />
                   </div>
                   <span className="property__user-name">
-                    Angelina
+                    {hostUser.hostUserName}
                   </span>
                   <span className="property__user-status">
-                    Pro
+                    {hostUser.hostUserStatus}
                   </span>
                 </div>
                 <div className="property__description">
                   <p className="property__text">
-                    A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
+                    {description}
                   </p>
                   <p className="property__text">
                     An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
@@ -163,23 +149,23 @@ function OfferPage(): JSX.Element {
                   <li className="reviews__item">
                     <div className="reviews__user user">
                       <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                        <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width="54" height="54" alt="Reviews avatar" />
+                        <img className="reviews__avatar user__avatar" src={review.picture} width="54" height="54" alt="Reviews avatar" />
                       </div>
                       <span className="reviews__user-name">
-                        Max
+                        {review.userName}
                       </span>
                     </div>
                     <div className="reviews__info">
                       <div className="reviews__rating rating">
                         <div className="reviews__stars rating__stars">
-                          <span style={{ width: '80%' }}></span>
+                          <span style={{ width: `${100 / 5 * Math.round(review.rating)}%` }}></span>
                           <span className="visually-hidden">Rating</span>
                         </div>
                       </div>
                       <p className="reviews__text">
-                        A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
+                        {review.comment}
                       </p>
-                      <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
+                      <time className="reviews__time" dateTime={review.reviewDate.toString()}></time>
                     </div>
                   </li>
                 </ul>
