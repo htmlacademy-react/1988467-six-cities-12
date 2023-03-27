@@ -1,22 +1,36 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { MouseEvent } from 'react';
+import { CLASS_NAME_LIST } from '../../const';
 
 type PlaceCardProps = {
+  className: string;
   offer: Offer;
   mouseOverHandler: (event: MouseEvent) => void;
 }
 
+function getElementToClassName(className: string, offer: Offer) {
+  switch (className) {
+    case CLASS_NAME_LIST.mainPage:
+      return (
+        <div className="place-card__mark">
+          <span>{offer.mark}</span>
+        </div>
+      );
+    case CLASS_NAME_LIST.offerPage:
+      return null;
+  }
+  return null;
+}
+
 function PlaceCard(props: PlaceCardProps): JSX.Element {
-  const { offer, mouseOverHandler } = props;
-  const { id, pictures, title, mark, apartmentType, rating, price, isFavorite } = offer;
+  const { className, offer, mouseOverHandler } = props;
+  const { id, pictures, title, apartmentType, rating, price, isFavorite } = offer;
 
   return (
-    <article key={id.toString()} id={id.toString()} className="cities__card place-card" onMouseEnter={mouseOverHandler}>
-      <div className="place-card__mark">
-        <span>{mark}</span>
-      </div>
-      <div className="cities__image-wrapper place-card__image-wrapper">
+    <article key={id.toString()} id={id.toString()} className={`${className}__card place-card`} onMouseEnter={mouseOverHandler}>
+      {getElementToClassName(className, offer)}
+      <div className={`${className}__image-wrapper place-card__image-wrapper`}>
         <Link to={`/offer/${id}`}>
           <img className="place-card__image" src={pictures[0]} width="260" height="200" alt="Place image" />
         </Link>

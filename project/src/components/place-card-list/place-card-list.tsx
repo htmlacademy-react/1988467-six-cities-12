@@ -3,12 +3,13 @@ import PlaceCard from '../place-card/place-card';
 import { MouseEvent } from 'react';
 
 type PlaceCardListProps = {
+  className: string;
   offers: Offer[];
   onPlaceCardHover: (activeId: number) => void;
 }
 
 function PlaceCardList(props: PlaceCardListProps): JSX.Element {
-  const { offers, onPlaceCardHover } = props;
+  const { className, offers, onPlaceCardHover } = props;
 
   const mouseOverHandler = (event: MouseEvent) => {
     event.preventDefault();
@@ -17,7 +18,7 @@ function PlaceCardList(props: PlaceCardListProps): JSX.Element {
 
   return (
     <>
-      {offers.map((offer) => <PlaceCard offer={offer} key={offer.id.toString()} mouseOverHandler={mouseOverHandler} />)}
+      {offers.map((offer) => <PlaceCard className={className} offer={offer} key={offer.id.toString()} mouseOverHandler={mouseOverHandler} />)}
     </>
   );
 

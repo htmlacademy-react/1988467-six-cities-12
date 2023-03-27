@@ -19,7 +19,7 @@ export type Offer = {
   insideList: string[];
   hostUser: HostUser;
   description: string;
-  review: Review;
+  reviews: Review[];
   isFavorite: boolean;
   lat: number;
   lng: number;

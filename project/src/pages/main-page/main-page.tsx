@@ -4,6 +4,7 @@ import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
 import { AMSTERDAM } from '../../mocks/cities';
 import { useState } from 'react';
+import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
 
 type MainPageProps = {
   rentalOffersCount: number;
@@ -18,7 +19,7 @@ function MainPage({ rentalOffersCount, offers }: MainPageProps): JSX.Element {
     setActiveCard(currentCard);
   };
 
-  const placeCardList = <PlaceCardList offers={offers} onPlaceCardHover={onPlaceCardHover} />;
+  const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.mainPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
 
   return (
     <div className="page page--gray page--main">
@@ -110,7 +111,7 @@ function MainPage({ rentalOffersCount, offers }: MainPageProps): JSX.Element {
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"><Map city={AMSTERDAM} points={offers} activeCard={activeCard} /></section>
+              <section className="cities__map map"><Map city={AMSTERDAM} points={offers} activeCard={activeCard} size={MAP_SIZE.mainPage} /></section>
             </div>
           </div>
         </div>
