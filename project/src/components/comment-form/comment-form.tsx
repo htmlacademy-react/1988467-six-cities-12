@@ -14,7 +14,7 @@ type RatingOption = {
 type RatingProps = {
   rating: RatingOption;
   selectedRating: number;
-  onChange(rating: number): void;
+  onChange: (rating: number) => void;
 
 };
 
