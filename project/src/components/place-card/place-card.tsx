@@ -1,28 +1,18 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import { useState } from 'react';
+import { MouseEvent } from 'react';
 
 type PlaceCardProps = {
   offer: Offer;
-  key: string;
-}
-
-type ActiveCard = {
-  id: number;
+  mouseOverHandler: (event: MouseEvent) => void;
 }
 
 function PlaceCard(props: PlaceCardProps): JSX.Element {
-  const { offer, key } = props;
+  const { offer, mouseOverHandler } = props;
   const { id, pictures, title, mark, apartmentType, rating, price, isFavorite } = offer;
 
-  const [activeCard, setActiveCard] = useState<ActiveCard>({ id: 0 });
-
-  const mouseOverHandler = () => {
-    setActiveCard({ ...activeCard, id });
-  };
-
   return (
-    <article key={key} className="cities__card place-card" onMouseOver={mouseOverHandler}>
+    <article key={id.toString()} id={id.toString()} className="cities__card place-card" onMouseEnter={mouseOverHandler}>
       <div className="place-card__mark">
         <span>{mark}</span>
       </div>
@@ -51,7 +41,7 @@ function PlaceCard(props: PlaceCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/:${id}`}>{title}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{apartmentType}</p>
       </div>

@@ -1,6 +1,9 @@
-import PlaceCard from '../../components/place-card/place-card';
+import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Logo from '../../components/logo/logo';
 import { Offer } from '../../types/offer';
+import Map from '../../components/map/map';
+import { AMSTERDAM } from '../../mocks/cities';
+import { useState } from 'react';
 
 type MainPageProps = {
   rentalOffersCount: number;
@@ -8,7 +11,14 @@ type MainPageProps = {
 }
 
 function MainPage({ rentalOffersCount, offers }: MainPageProps): JSX.Element {
-  const placeCardList = offers.map((offer) => <PlaceCard offer={offer} key={offer.id.toString()} />);
+  const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
+
+  const onPlaceCardHover = (activeId: number) => {
+    const currentCard = offers.find((offer) => offer.id === activeId);
+    setActiveCard(currentCard);
+  };
+
+  const placeCardList = <PlaceCardList offers={offers} onPlaceCardHover={onPlaceCardHover} />;
 
   return (
     <div className="page page--gray page--main">
@@ -100,7 +110,7 @@ function MainPage({ rentalOffersCount, offers }: MainPageProps): JSX.Element {
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map"><Map city={AMSTERDAM} points={offers} activeCard={activeCard} /></section>
             </div>
           </div>
         </div>

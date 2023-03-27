@@ -4,8 +4,6 @@ import { reviews } from './reviews';
 const OFFER_IMG_URL = 'https://loremflickr.com/248/152?random=';
 const AVATAR_URL = 'https://i.pravatar.cc/128';
 
-// const picture: Picture = `${OFFER_IMG_URL}${Math.random()}`;
-
 export const offers: Offer[] = [
   {
     id: 1,
@@ -35,6 +33,8 @@ export const offers: Offer[] = [
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
     review: reviews[0],
     isFavorite: true,
+    lat: 52.3909553943508,
+    lng: 4.85309666406198,
   },
   {
     id: 2,
@@ -64,6 +64,8 @@ export const offers: Offer[] = [
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
     review: reviews[1],
     isFavorite: false,
+    lat: 52.3609553943508,
+    lng: 4.85309666406198,
   },
   {
     id: 3,
@@ -93,6 +95,8 @@ export const offers: Offer[] = [
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
     review: reviews[2],
     isFavorite: false,
+    lat: 52.3909553943508,
+    lng: 4.929309666406198,
   },
   {
     id: 4,
@@ -122,5 +126,7 @@ export const offers: Offer[] = [
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
     review: reviews[3],
     isFavorite: true,
+    lat: 52.3809553943508,
+    lng: 4.939309666406198,
   },
 ];

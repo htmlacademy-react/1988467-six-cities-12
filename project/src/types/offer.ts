@@ -21,4 +21,6 @@ export type Offer = {
   description: string;
   review: Review;
   isFavorite: boolean;
+  lat: number;
+  lng: number;
 };
