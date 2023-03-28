@@ -10,6 +10,11 @@ type MapProps = {
   city: City;
   points: Offer[];
   activeCard: Offer | undefined;
+  size: {
+    height: string;
+    width: string;
+    margin: string;
+  };
 };
 
 const defaultCustomIcon = new Icon({
@@ -25,7 +30,7 @@ const currentCustomIcon = new Icon({
 });
 
 function Map(props: MapProps): JSX.Element {
-  const { city, points, activeCard } = props;
+  const { city, points, activeCard, size } = props;
 
   const mapRef = useRef(null);
   const map = useMap({ mapRef, city });
@@ -51,7 +56,7 @@ function Map(props: MapProps): JSX.Element {
 
   return (
     <div
-      style={{ height: '794px' }}
+      style={{ height: size.height, width: size.width, margin: size.margin }}
       ref={mapRef}
     >
     </div>
