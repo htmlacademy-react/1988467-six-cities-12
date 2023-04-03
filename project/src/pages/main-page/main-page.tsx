@@ -2,22 +2,31 @@ import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Logo from '../../components/logo/logo';
 import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
-import { AMSTERDAM } from '../../mocks/cities';
+import { CITIES_DATA } from '../../mocks/cities';
 import { useState } from 'react';
 import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
+import CitiesList from '../../components/cities-list/cities-list';
+import { useAppDispatch } from '../../hooks';
+import { changeCityAction } from '../../store/actions/actions';
 
 type MainPageProps = {
   rentalOffersCount: number;
   offers: Offer[];
+  selectedCity: string;
 }
 
-function MainPage({ rentalOffersCount, offers }: MainPageProps): JSX.Element {
+function MainPage({ rentalOffersCount, offers, selectedCity }: MainPageProps): JSX.Element {
   const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
+
+  const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.title === selectedCity);
 
   const onPlaceCardHover = (activeId: number) => {
     const currentCard = offers.find((offer) => offer.id === activeId);
     setActiveCard(currentCard);
   };
+
+  const dispatch = useAppDispatch();
+  const onCityChange = (city: string) => dispatch(changeCityAction(city));
 
   const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.mainPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
 
@@ -52,45 +61,14 @@ function MainPage({ rentalOffersCount, offers }: MainPageProps): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <CitiesList onCityChange={onCityChange} />
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{rentalOffersCount} places to stay in Amsterdam</b>
+              <b className="places__found">{rentalOffersCount} places to stay in {selectedCity}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -111,7 +89,9 @@ function MainPage({ rentalOffersCount, offers }: MainPageProps): JSX.Element {
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"><Map city={AMSTERDAM} points={offers} activeCard={activeCard} size={MAP_SIZE.mainPage} /></section>
+              <section className="cities__map map">
+                {!!currentCity && <Map city={currentCity} points={offers} activeCard={activeCard} size={MAP_SIZE.mainPage} />}
+              </section>
             </div>
           </div>
         </div>

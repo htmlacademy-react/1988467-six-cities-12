@@ -7,6 +7,7 @@ const AVATAR_URL = 'https://i.pravatar.cc/128';
 export const offers: Offer[] = [
   {
     id: 1,
+    city: 'Paris',
     pictures: [
       `${OFFER_IMG_URL}${Math.random()}`,
       `${OFFER_IMG_URL}${Math.random()}`,
@@ -33,11 +34,12 @@ export const offers: Offer[] = [
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
     reviews: reviews,
     isFavorite: true,
-    lat: 52.3909553943508,
-    lng: 4.85309666406198,
+    lat: 48.8909553943508,
+    lng: 2.35309666406198,
   },
   {
     id: 2,
+    city: 'Amsterdam',
     pictures: [
       `${OFFER_IMG_URL}${Math.random()}`,
       `${OFFER_IMG_URL}${Math.random()}`,
@@ -69,6 +71,7 @@ export const offers: Offer[] = [
   },
   {
     id: 3,
+    city: 'Paris',
     pictures: [
       `${OFFER_IMG_URL}${Math.random()}`,
       `${OFFER_IMG_URL}${Math.random()}`,
@@ -95,11 +98,12 @@ export const offers: Offer[] = [
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
     reviews: reviews,
     isFavorite: false,
-    lat: 52.3909553943508,
-    lng: 4.929309666406198,
+    lat: 48.8909553943508,
+    lng: 2.329309666406198,
   },
   {
     id: 4,
+    city: 'Amsterdam',
     pictures: [
       `${OFFER_IMG_URL}${Math.random()}`,
       `${OFFER_IMG_URL}${Math.random()}`,

@@ -8,14 +8,17 @@ import PlaceCardList from '../../components/place-card-list/place-card-list';
 import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
 import { useState } from 'react';
 import Map from '../../components/map/map';
-import { AMSTERDAM } from '../../mocks/cities';
+import { CITIES_DATA } from '../../mocks/cities';
 
 type Props = {
   offers: Offer[];
+  selectedCity: string;
 }
 
-function OfferPage({ offers }: Props): JSX.Element {
+function OfferPage({ offers, selectedCity }: Props): JSX.Element {
   const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
+
+  const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.title === selectedCity);
 
   const onPlaceCardHover = (activeId: number) => {
     const currentCard = offers.find((offer) => offer.id === activeId);
@@ -157,7 +160,7 @@ function OfferPage({ offers }: Props): JSX.Element {
             </div>
           </div>
           <section className="property__map map">
-            <Map city={AMSTERDAM} points={offers} activeCard={activeCard} size={MAP_SIZE.offerPage} />
+            {!!currentCity && <Map city={currentCity} points={offers} activeCard={activeCard} size={MAP_SIZE.offerPage} />}
           </section>
         </section>
         <div className="container">

@@ -64,4 +64,6 @@ const MAP_SIZE = {
   }
 };
 
-export { RATINGS, CLASS_NAME_LIST, MAP_SIZE };
+const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf',];
+
+export { RATINGS, CLASS_NAME_LIST, MAP_SIZE, CITIES };
