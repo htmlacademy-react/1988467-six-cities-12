@@ -8,6 +8,7 @@ export type HostUser = {
 
 export type Offer = {
   id: number;
+  city: string;
   pictures: string[];
   title: string;
   mark: string;

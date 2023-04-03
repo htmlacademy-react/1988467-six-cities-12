@@ -54,6 +54,17 @@ function Map(props: MapProps): JSX.Element {
     }
   }, [map, points, activeCard]);
 
+
+  useEffect(() => {
+    map?.setView(
+      {
+        lat: city.lat,
+        lng: city.lng,
+      },
+      city.zoom,
+    );
+  }, [city, map]);
+
   return (
     <div
       style={{ height: size.height, width: size.width, margin: size.margin }}
