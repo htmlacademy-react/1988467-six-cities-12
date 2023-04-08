@@ -1,3 +1,6 @@
+import { CityFilter } from './types/city';
+import { Offer } from './types/offer';
+
 const RENTAL_OFFERS_COUNT = 312;
 
 const RATINGS = [
@@ -41,10 +44,10 @@ export enum AuthorizationStatus {
 }
 
 export const URL_MARKER_DEFAULT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
+  './img/pin.svg';
 
 export const URL_MARKER_CURRENT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
+  './img/pin-active.svg';
 
 const CLASS_NAME_LIST = {
   mainPage: 'cities',
@@ -64,6 +67,28 @@ const MAP_SIZE = {
   }
 };
 
-const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf',];
+const CITIES: CityFilter[] = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
-export { RATINGS, CLASS_NAME_LIST, MAP_SIZE, CITIES };
+const SORT_TYPE_ACTIONS = [
+  {
+    sortType: 'sortPopular',
+    title: 'Popular',
+  },
+  {
+    sortType: 'sortPriceDesc',
+    getSortedOffers: (offerA: Offer, offerB: Offer): number => +offerB.price - +offerA.price,
+    title: 'Price: high to low',
+  },
+  {
+    sortType: 'sortPriceAsc',
+    getSortedOffers: (offerA: Offer, offerB: Offer): number => +offerA.price - +offerB.price,
+    title: 'Price: low to high',
+  },
+  {
+    sortType: 'sortRatingDesc',
+    getSortedOffers: (offerA: Offer, offerB: Offer): number => offerB.rating - +offerA.rating,
+    title: 'Top rated first',
+  },
+];
+
+export { RATINGS, CLASS_NAME_LIST, MAP_SIZE, CITIES, SORT_TYPE_ACTIONS };

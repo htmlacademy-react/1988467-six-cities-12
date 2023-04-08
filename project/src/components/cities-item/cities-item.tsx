@@ -1,7 +1,9 @@
+import { CityFilter } from '../../types/city';
+
 type CitiesItemProps = {
-  city: string;
-  onClick: (city: string) => void;
-}
+  city: CityFilter;
+  onClick: (city: CityFilter) => void;
+};
 
 function CitiesItem({ city, onClick }: CitiesItemProps): JSX.Element {
   return (

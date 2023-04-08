@@ -14,13 +14,14 @@ function App(): JSX.Element {
   const filteredOffers = useAppSelector((state) => state.filteredOffers);
   const allOffers = useAppSelector((state) => state.offers);
   const selectedCity = useAppSelector((state) => state.city);
+  const selectedSortType = useAppSelector((state) => state.sortType);
 
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route path={AppRoute.Main}>
-            <Route index element={<MainPage rentalOffersCount={filteredOffers.length} offers={filteredOffers} selectedCity={selectedCity} />} />
+            <Route index element={<MainPage rentalOffersCount={filteredOffers.length} offers={filteredOffers} selectedCity={selectedCity} selectedSortType={selectedSortType} />} />
             <Route path={AppRoute.Login} element={<LoginPage />} />
             <Route path={AppRoute.Favorites}
               element={
