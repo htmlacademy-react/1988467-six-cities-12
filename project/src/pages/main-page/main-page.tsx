@@ -7,15 +7,19 @@ import { useState } from 'react';
 import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
 import CitiesList from '../../components/cities-list/cities-list';
 import { useAppDispatch } from '../../hooks';
-import { changeCityAction } from '../../store/actions/actions';
+import { changeCityAction, changeSortTypeAction } from '../../store/actions/actions';
+import SortsContainer from '../../components/sorts-container/sorts-container';
+import { CityFilter } from '../../types/city';
+import { OfferSortType } from '../../types/sort';
 
 type MainPageProps = {
   rentalOffersCount: number;
   offers: Offer[];
-  selectedCity: string;
+  selectedCity: CityFilter;
+  selectedSortType: OfferSortType;
 }
 
-function MainPage({ rentalOffersCount, offers, selectedCity }: MainPageProps): JSX.Element {
+function MainPage({ rentalOffersCount, offers, selectedCity, selectedSortType }: MainPageProps): JSX.Element {
   const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
 
   const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.title === selectedCity);
@@ -26,7 +30,8 @@ function MainPage({ rentalOffersCount, offers, selectedCity }: MainPageProps): J
   };
 
   const dispatch = useAppDispatch();
-  const onCityChange = (city: string) => dispatch(changeCityAction(city));
+  const onCityChange = (city: CityFilter) => dispatch(changeCityAction(city));
+  const onSortTypeChange = (sortType: OfferSortType) => dispatch(changeSortTypeAction(sortType));
 
   const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.mainPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
 
@@ -69,21 +74,7 @@ function MainPage({ rentalOffersCount, offers, selectedCity }: MainPageProps): J
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{rentalOffersCount} places to stay in {selectedCity}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
+              <SortsContainer selectedSortType={selectedSortType} onSortTypeChange={onSortTypeChange} />
               <div className="cities__places-list places__list tabs__content">
                 {placeCardList}
               </div>
