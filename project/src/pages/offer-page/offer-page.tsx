@@ -8,7 +8,7 @@ import PlaceCardList from '../../components/place-card-list/place-card-list';
 import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
 import { useState } from 'react';
 import Map from '../../components/map/map';
-import { CITIES_DATA } from '../../mocks/cities';
+import { CITIES_DATA } from '../../const';
 
 type Props = {
   offers: Offer[];
@@ -18,7 +18,7 @@ type Props = {
 function OfferPage({ offers, selectedCity }: Props): JSX.Element {
   const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
 
-  const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.title === selectedCity);
+  const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.name === selectedCity);
 
   const onPlaceCardHover = (activeId: number) => {
     const currentCard = offers.find((offer) => offer.id === activeId);
@@ -27,7 +27,7 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
 
   const { id: offerId } = useParams<{ id: string }>();
   const offer = offers.find((of) => of.id.toString() === offerId) || {} as Offer;
-  const { price, pictures, title, mark, apartmentType, bedrooms, adults, rating, insideList, hostUser, description, reviews } = offer;
+  const { price, images, title, isPremium, type, bedrooms, maxAdults, rating, goods, host, description, reviews } = offer;
 
   const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.mainPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
 
@@ -66,11 +66,11 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
           <div className="property__gallery-container container">
             <div className="property__gallery">
               {
-                pictures.map((picture, index) => {
+                images.map((image, index) => {
                   const keyValue = index.toString();
                   return (
                     <div key={keyValue} className="property__image-wrapper">
-                      <img className="property__image" src={picture} alt="Photo studio" />
+                      <img className="property__image" src={image} alt="Photo studio" />
                     </div>
                   );
                 })
@@ -80,7 +80,7 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
           <div className="property__container container">
             <div className="property__wrapper">
               <div className="property__mark">
-                <span>{mark}</span>
+                <span>{isPremium ? 'Premium' : ''}</span>
               </div>
               <div className="property__name-wrapper">
                 <h1 className="property__name">
@@ -102,13 +102,13 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  {apartmentType}
+                  {type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {bedrooms}
+                  {`${bedrooms} ${bedrooms === 1 ? 'Bedroom' : 'Bedrooms'}`}
                 </li>
                 <li className="property__feature property__feature--adults">
-                  {adults}
+                  {`Max ${maxAdults} ${maxAdults === 1 ? 'adult' : 'adults'}`}
                 </li>
               </ul>
               <div className="property__price">
@@ -119,7 +119,7 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
                   {
-                    insideList.map((insideItem, index) => {
+                    goods.map((insideItem, index) => {
                       const keyValue = index.toString();
                       return (
                         <li key={keyValue} className="property__inside-item">
@@ -134,13 +134,13 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src={hostUser.avatar} width="74" height="74" alt="Host avatar" />
+                    <img className="property__avatar user__avatar" src={host.avatarUrl} width="74" height="74" alt="Host avatar" />
                   </div>
                   <span className="property__user-name">
-                    {hostUser.hostUserName}
+                    {host.name}
                   </span>
                   <span className="property__user-status">
-                    {hostUser.hostUserStatus}
+                    {host.isPro ? 'Pro' : ''}
                   </span>
                 </div>
                 <div className="property__description">

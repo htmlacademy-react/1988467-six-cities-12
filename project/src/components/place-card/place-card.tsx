@@ -14,7 +14,7 @@ function getElementToClassName(className: string, offer: Offer) {
     case CLASS_NAME_LIST.mainPage:
       return (
         <div className="place-card__mark">
-          <span>{offer.mark}</span>
+          <span>{offer.isPremium ? 'Premium' : ''}</span>
         </div>
       );
     case CLASS_NAME_LIST.offerPage:
@@ -25,14 +25,14 @@ function getElementToClassName(className: string, offer: Offer) {
 
 function PlaceCard(props: PlaceCardProps): JSX.Element {
   const { className, offer, mouseOverHandler } = props;
-  const { id, pictures, title, apartmentType, rating, price, isFavorite } = offer;
+  const { id, images, title, type, rating, price, isFavorite } = offer;
 
   return (
     <article key={id.toString()} id={id.toString()} className={`${className}__card place-card`} onMouseEnter={mouseOverHandler}>
       {getElementToClassName(className, offer)}
       <div className={`${className}__image-wrapper place-card__image-wrapper`}>
         <Link to={`/offer/${id}`}>
-          <img className="place-card__image" src={pictures[0]} width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={images[0]} width="260" height="200" alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">
@@ -57,7 +57,7 @@ function PlaceCard(props: PlaceCardProps): JSX.Element {
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{apartmentType}</p>
+        <p className="place-card__type">{type}</p>
       </div>
     </article>
   );

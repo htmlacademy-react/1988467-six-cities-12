@@ -39,8 +39,8 @@ function Map(props: MapProps): JSX.Element {
     if (map) {
       points.forEach((point) => {
         const marker = new Marker({
-          lat: point.lat,
-          lng: point.lng
+          lat: point.location.latitude,
+          lng: point.location.longitude
         });
 
         marker
@@ -58,10 +58,10 @@ function Map(props: MapProps): JSX.Element {
   useEffect(() => {
     map?.setView(
       {
-        lat: city.lat,
-        lng: city.lng,
+        lat: city.location.latitude,
+        lng: city.location.longitude,
       },
-      city.zoom,
+      city.location.zoom,
     );
   }, [city, map]);
 

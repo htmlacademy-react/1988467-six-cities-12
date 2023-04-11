@@ -1,4 +1,4 @@
-import { CityFilter } from './types/city';
+import { City, CityFilter } from './types/city';
 import { Offer } from './types/offer';
 
 const RENTAL_OFFERS_COUNT = 312;
@@ -89,6 +89,64 @@ const SORT_TYPE_ACTIONS = [
     getSortedOffers: (offerA: Offer, offerB: Offer): number => offerB.rating - +offerA.rating,
     title: 'Top rated first',
   },
+];
+
+export enum APIRoute {
+  Offers = '/hotels',
+  SelectedOffer = '/hotels/{hotelId}',
+  Login = '/login',
+  Logout = '/logout',
+}
+
+export const CITIES_DATA: City[] = [
+  {
+    name: 'Paris',
+    location: {
+      latitude: 48.85341,
+      longitude: 2.34880,
+      zoom: 11,
+    }
+  },
+  {
+    name: 'Cologne',
+    location: {
+      latitude: 50.9333,
+      longitude: 6.95,
+      zoom: 11,
+    }
+  },
+  {
+    name: 'Brussels',
+    location: {
+      latitude: 50.8504,
+      longitude: 4.34878,
+      zoom: 11,
+    }
+  },
+  {
+    name: 'Amsterdam',
+    location: {
+      latitude: 52.374,
+      longitude: 4.88969,
+      zoom: 11,
+    }
+  },
+  {
+    name: 'Hamburg',
+    location: {
+      latitude: 53.5753,
+      longitude: 10.0153,
+      zoom: 11,
+    }
+  },
+  {
+    name: 'Dusseldorf',
+    location: {
+      latitude: 51.2217,
+      longitude: 6.77616,
+      zoom: 11,
+    }
+  }
 ];
 
 export { RATINGS, CLASS_NAME_LIST, MAP_SIZE, CITIES, SORT_TYPE_ACTIONS };

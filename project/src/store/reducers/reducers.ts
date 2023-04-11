@@ -1,16 +1,26 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { offers } from '../../mocks/offers';
-import { changeCityAction, changeSortTypeAction } from '../actions/actions';
+import { changeCityAction, changeSortTypeAction, loadOffersAction, setErrorAction, setOffersDataLoadingStatusAction } from '../actions/actions';
 import { SORT_TYPE_ACTIONS } from '../../const';
 import { Offer } from '../../types/offer';
 import { CityFilter } from '../../types/city';
 import { OfferSortType } from '../../types/sort';
 
-const initialState = {
-  city: 'Paris' as CityFilter,
-  offers,
-  filteredOffers: offers.filter((offer) => offer.city === 'Paris'),
-  sortType: 'sortPopular' as OfferSortType,
+type InitialState = {
+  city: CityFilter;
+  offers: Offer[];
+  filteredOffers: Offer[];
+  sortType: OfferSortType;
+  error: string | null;
+  isOffersDataLoading: boolean;
+}
+
+const initialState: InitialState = {
+  city: 'Paris',
+  offers: [],
+  filteredOffers: [],
+  sortType: 'sortPopular',
+  error: null,
+  isOffersDataLoading: false,
 };
 
 const sortOffers = (filteredOffers: Offer[], sortType: OfferSortType): Offer[] => {
@@ -30,13 +40,22 @@ const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(changeCityAction, (state, action) => {
       state.city = action.payload;
-      state.filteredOffers = state.offers.filter((offer) => offer.city === action.payload);
+      state.filteredOffers = state.offers.filter((offer) => offer.city?.name === action.payload);
       state.filteredOffers = sortOffers(state.filteredOffers, state.sortType);
     })
     .addCase(changeSortTypeAction, (state, action) => {
       state.sortType = action.payload;
-      const offersFilteredByCity = state.offers.filter((offer) => offer.city === state.city);
+      const offersFilteredByCity = state.offers.filter((offer) => offer.city?.name === state.city);
       state.filteredOffers = sortOffers(offersFilteredByCity, action.payload);
+    })
+    .addCase(loadOffersAction, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(setErrorAction, (state, action) => {
+      state.error = action.payload;
+    })
+    .addCase(setOffersDataLoadingStatusAction, (state, action) => {
+      state.isOffersDataLoading = action.payload;
     });
 });
 
