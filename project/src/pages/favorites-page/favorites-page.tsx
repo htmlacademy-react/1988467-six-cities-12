@@ -55,17 +55,17 @@ function FavoritesPage(props: FavoritesPageProps): JSX.Element {
                 </div>
                 <div className="favorites__places">
                   {offers.map((offer) => {
-                    const { id, pictures, title, mark, apartmentType, rating, price, isFavorite } = offer;
+                    const { id, images, title, isPremium, type, rating, price, isFavorite } = offer;
                     const keyValue = offer.id;
 
                     return (isFavorite ?
                       <article key={keyValue} className="favorites__card place-card">
                         <div className="place-card__mark">
-                          <span>{mark}</span>
+                          <span>{isPremium ? 'Premium' : ''}</span>
                         </div>
                         <div className="favorites__image-wrapper place-card__image-wrapper">
                           <Link to={`/offer/${id}`}>
-                            <img className="place-card__image" src={pictures[0]} width="150" height="110" alt="Place image" />
+                            <img className="place-card__image" src={images[0]} width="150" height="110" alt="Place image" />
                           </Link>
                         </div>
                         <div className="favorites__card-info place-card__info">
@@ -90,7 +90,7 @@ function FavoritesPage(props: FavoritesPageProps): JSX.Element {
                           <h2 className="place-card__name">
                             <Link to={`/offer/${id}`}>{title}</Link>
                           </h2>
-                          <p className="place-card__type">{apartmentType}</p>
+                          <p className="place-card__type">{type}</p>
                         </div>
                       </article>
                       : null);

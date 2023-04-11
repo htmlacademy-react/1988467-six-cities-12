@@ -91,4 +91,11 @@ const SORT_TYPE_ACTIONS = [
   },
 ];
 
+export enum APIRoute {
+  Offers = '/hotels',
+  SelectedOffer = '/hotels/{hotelId}',
+  Login = '/login',
+  Logout = '/logout',
+}
+
 export { RATINGS, CLASS_NAME_LIST, MAP_SIZE, CITIES, SORT_TYPE_ACTIONS };

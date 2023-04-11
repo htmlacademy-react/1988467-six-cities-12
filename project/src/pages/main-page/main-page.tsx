@@ -22,7 +22,7 @@ type MainPageProps = {
 function MainPage({ rentalOffersCount, offers, selectedCity, selectedSortType }: MainPageProps): JSX.Element {
   const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
 
-  const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.title === selectedCity);
+  const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.name === selectedCity);
 
   const onPlaceCardHover = (activeId: number) => {
     const currentCard = offers.find((offer) => offer.id === activeId);

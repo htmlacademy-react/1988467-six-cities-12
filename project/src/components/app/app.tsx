@@ -8,6 +8,7 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
 function App(): JSX.Element {
 
@@ -15,6 +16,13 @@ function App(): JSX.Element {
   const allOffers = useAppSelector((state) => state.offers);
   const selectedCity = useAppSelector((state) => state.city);
   const selectedSortType = useAppSelector((state) => state.sortType);
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
+  if(isOffersDataLoading) {
+    return (
+      <LoadingScreen/>
+    );
+  }
 
   return (
     <HelmetProvider>
