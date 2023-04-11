@@ -2,7 +2,7 @@ import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Logo from '../../components/logo/logo';
 import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
-import { CITIES_DATA } from '../../mocks/cities';
+import { CITIES_DATA } from '../../const';
 import { useState } from 'react';
 import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
 import CitiesList from '../../components/cities-list/cities-list';

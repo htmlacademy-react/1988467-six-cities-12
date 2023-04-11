@@ -8,7 +8,7 @@ import PlaceCardList from '../../components/place-card-list/place-card-list';
 import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
 import { useState } from 'react';
 import Map from '../../components/map/map';
-import { CITIES_DATA } from '../../mocks/cities';
+import { CITIES_DATA } from '../../const';
 
 type Props = {
   offers: Offer[];
