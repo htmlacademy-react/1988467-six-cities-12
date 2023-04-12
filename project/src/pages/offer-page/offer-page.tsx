@@ -9,13 +9,15 @@ import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
 import { useState } from 'react';
 import Map from '../../components/map/map';
 import { CITIES_DATA } from '../../const';
+import { Review } from '../../types/review';
 
 type Props = {
   offers: Offer[];
   selectedCity: string;
+  comments: Review[];
 }
 
-function OfferPage({ offers, selectedCity }: Props): JSX.Element {
+function OfferPage({ offers, selectedCity, comments }: Props): JSX.Element {
   const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
 
   const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.name === selectedCity);
@@ -27,9 +29,9 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
 
   const { id: offerId } = useParams<{ id: string }>();
   const offer = offers.find((of) => of.id.toString() === offerId) || {} as Offer;
-  const { price, images, title, isPremium, type, bedrooms, maxAdults, rating, goods, host, description, reviews } = offer;
+  const { price, images, title, isPremium, type, bedrooms, maxAdults, rating, goods, host, description } = offer;
 
-  const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.mainPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
+  const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.offerPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
 
   return (
     <div className="page">
@@ -153,8 +155,8 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-                <ReviewsList reviews={reviews} />
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
+                <ReviewsList reviews={comments} />
                 <CommentForm />
               </section>
             </div>

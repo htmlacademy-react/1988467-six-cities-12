@@ -3,11 +3,12 @@ import { AppDispatch, State } from '../../types/state';
 import { AxiosInstance } from 'axios';
 import { Offer } from '../../types/offer';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../../const';
-import { loadOffersAction, setOffersDataLoadingStatusAction, changeCityAction, requireAuthorizationAction, setErrorAction, saveLoginAction } from './actions';
+import { loadOffersAction, setOffersDataLoadingStatusAction, changeCityAction, requireAuthorizationAction, setErrorAction, saveLoginAction, loadCommentsAction } from './actions';
 import { AuthData } from '../../types/auth-data';
 import { AuthInfo } from '../../types/user-data';
 import { dropToken, saveToken } from '../../services/token';
 import { store } from '..';
+import { NewComment, Review } from '../../types/review';
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -21,6 +22,18 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
     dispatch(setOffersDataLoadingStatusAction(false));
     dispatch(loadOffersAction(data));
     dispatch(changeCityAction('Paris'));
+  }
+);
+
+export const fetchCommentsAction = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'fetchComments',
+  async (_arg, { dispatch, extra: api }) => {
+    const { data } = await api.get<Review[]>(APIRoute.Comments);
+    dispatch(loadCommentsAction(data));
   }
 );
 
@@ -76,4 +89,15 @@ export const clearErrorAction = createAsyncThunk(
       TIMEOUT_SHOW_ERROR,
     );
   },
+);
+
+export const sendNewCommentAction = createAsyncThunk<void, NewComment, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'sendNewComment',
+  async ({ review, rating }, { dispatch, extra: api }) => {
+    await api.post<NewComment>(APIRoute.Comments, { review, rating });
+  }
 );

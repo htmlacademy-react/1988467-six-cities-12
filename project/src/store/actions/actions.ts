@@ -3,6 +3,7 @@ import { OfferSortType } from '../../types/sort';
 import { CityFilter } from '../../types/city';
 import { Offer } from '../../types/offer';
 import { AuthorizationStatus } from '../../const';
+import { Review } from '../../types/review';
 
 export const changeCityAction = createAction('changeCity', (selectedCity: CityFilter) => (
   {
@@ -25,3 +26,5 @@ export const setOffersDataLoadingStatusAction = createAction<boolean>('setOffers
 export const requireAuthorizationAction = createAction<AuthorizationStatus>('requireAuthorization');
 
 export const saveLoginAction = createAction<string>('saveLogin');
+
+export const loadCommentsAction = createAction<Review[]>('loadComments');
