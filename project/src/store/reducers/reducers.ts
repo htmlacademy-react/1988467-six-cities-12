@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCityAction, changeSortTypeAction, loadOffersAction, setErrorAction, setOffersDataLoadingStatusAction } from '../actions/actions';
-import { SORT_TYPE_ACTIONS } from '../../const';
+import { changeCityAction, changeSortTypeAction, loadOffersAction, requireAuthorizationAction, saveLoginAction, setErrorAction, setOffersDataLoadingStatusAction } from '../actions/actions';
+import { AuthorizationStatus, SORT_TYPE_ACTIONS } from '../../const';
 import { Offer } from '../../types/offer';
 import { CityFilter } from '../../types/city';
 import { OfferSortType } from '../../types/sort';
@@ -12,6 +12,8 @@ type InitialState = {
   sortType: OfferSortType;
   error: string | null;
   isOffersDataLoading: boolean;
+  authorizationStatus: AuthorizationStatus;
+  login: string | null;
 }
 
 const initialState: InitialState = {
@@ -21,6 +23,8 @@ const initialState: InitialState = {
   sortType: 'sortPopular',
   error: null,
   isOffersDataLoading: false,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  login: null,
 };
 
 const sortOffers = (filteredOffers: Offer[], sortType: OfferSortType): Offer[] => {
@@ -56,6 +60,12 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setOffersDataLoadingStatusAction, (state, action) => {
       state.isOffersDataLoading = action.payload;
+    })
+    .addCase(requireAuthorizationAction, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(saveLoginAction, (state, action) => {
+      state.login = action.payload;
     });
 });
 
