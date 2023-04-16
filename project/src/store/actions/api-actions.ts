@@ -3,7 +3,7 @@ import { AppDispatch, State } from '../../types/state';
 import { AxiosInstance } from 'axios';
 import { Offer } from '../../types/offer';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../../const';
-import { loadOffersAction, setOffersDataLoadingStatusAction, changeCityAction, requireAuthorizationAction, setErrorAction, saveLoginAction, loadCommentsAction, loadSelectedOfferAction } from './actions';
+import { loadOffersAction, setOffersDataLoadingStatusAction, changeCityAction, requireAuthorizationAction, setErrorAction, saveLoginAction, loadCommentsAction, loadSelectedOfferAction, loadNearPlacesAction } from './actions';
 import { AuthData } from '../../types/auth-data';
 import { AuthInfo } from '../../types/user-data';
 import { dropToken, saveToken } from '../../services/token';
@@ -46,6 +46,18 @@ export const fetchCommentsAction = createAsyncThunk<void, number, {
   async (id, { dispatch, extra: api }) => {
     const { data } = await api.get<Review[]>(`/comments/${id}`);
     dispatch(loadCommentsAction(data));
+  }
+);
+
+export const fetchNearPlacesAction = createAsyncThunk<void, number, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'fetchNearPlaces',
+  async (id, { dispatch, extra: api }) => {
+    const { data } = await api.get<Offer[]>(`/hotels/${id}/nearby`);
+    dispatch(loadNearPlacesAction(data));
   }
 );
 

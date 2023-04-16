@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import Map from '../../components/map/map';
 import { CITIES_DATA } from '../../const';
 import { useAppSelector } from '../../hooks';
-import { fetchCommentsAction, fetchSelectedOfferAction } from '../../store/actions/api-actions';
+import { fetchCommentsAction, fetchNearPlacesAction, fetchSelectedOfferAction } from '../../store/actions/api-actions';
 import { store } from '../../store';
 import Authorization from '../../components/authorization/authorization';
 
@@ -34,6 +34,10 @@ function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.El
 
   useEffect(() => {
     store.dispatch(fetchSelectedOfferAction(Number(offerId)));
+  }, [offerId]);
+
+  useEffect(() => {
+    store.dispatch(fetchNearPlacesAction(Number(offerId)));
   }, [offerId]);
 
   const offer = useAppSelector((state) => state.selectedOffer);

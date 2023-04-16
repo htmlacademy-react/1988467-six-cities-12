@@ -30,3 +30,5 @@ export const saveLoginAction = createAction<string>('saveLogin');
 export const loadCommentsAction = createAction<Review[]>('loadComments');
 
 export const loadSelectedOfferAction = createAction<Offer>('loadSelectedOffer');
+
+export const loadNearPlacesAction = createAction<Offer[]>('loadNearPlaces');

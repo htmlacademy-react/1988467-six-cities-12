@@ -21,14 +21,15 @@ function App(): JSX.Element {
   const selectedSortType = useAppSelector((state) => state.sortType);
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const nearPlaces = useAppSelector((state) => state.nearPlaces);
 
   useEffect(() => {
     store.dispatch(fetchOffersAction());
   }, []);
 
-  if(isOffersDataLoading) {
+  if (isOffersDataLoading) {
     return (
-      <LoadingScreen/>
+      <LoadingScreen />
     );
   }
 
@@ -46,7 +47,7 @@ function App(): JSX.Element {
                 </PrivateRoute>
               }
             />
-            <Route path={AppRoute.Room} element={<OfferPage offers={filteredOffers} selectedCity={selectedCity} authorizationStatus={authorizationStatus}/>} />
+            <Route path={AppRoute.Room} element={<OfferPage offers={nearPlaces} selectedCity={selectedCity} authorizationStatus={authorizationStatus} />} />
           </Route>
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
