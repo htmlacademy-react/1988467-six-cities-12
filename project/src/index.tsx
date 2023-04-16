@@ -3,10 +3,9 @@ import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
 import { Provider } from 'react-redux';
 import { store } from './store/index';
-import { fetchCommentsAction, fetchOffersAction } from './store/actions/api-actions';
+import { fetchOffersAction } from './store/actions/api-actions';
 
 store.dispatch(fetchOffersAction());
-store.dispatch(fetchCommentsAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

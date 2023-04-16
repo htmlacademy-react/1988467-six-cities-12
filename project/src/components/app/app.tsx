@@ -18,7 +18,6 @@ function App(): JSX.Element {
   const selectedSortType = useAppSelector((state) => state.sortType);
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const comments = useAppSelector((state) => state.comments);
 
   if(isOffersDataLoading) {
     return (
@@ -40,7 +39,7 @@ function App(): JSX.Element {
                 </PrivateRoute>
               }
             />
-            <Route path={AppRoute.Room} element={<OfferPage offers={filteredOffers} selectedCity={selectedCity} comments={comments}/>} />
+            <Route path={AppRoute.Room} element={<OfferPage offers={filteredOffers} selectedCity={selectedCity}/>} />
           </Route>
           <Route path='*' element={<NotFoundPage />} />
         </Routes>

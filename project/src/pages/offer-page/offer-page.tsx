@@ -9,15 +9,16 @@ import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
 import { useState } from 'react';
 import Map from '../../components/map/map';
 import { CITIES_DATA } from '../../const';
-import { Review } from '../../types/review';
+import { useAppSelector } from '../../hooks';
+import { fetchCommentsAction } from '../../store/actions/api-actions';
+import { store } from '../../store';
 
 type Props = {
   offers: Offer[];
   selectedCity: string;
-  comments: Review[];
 }
 
-function OfferPage({ offers, selectedCity, comments }: Props): JSX.Element {
+function OfferPage({ offers, selectedCity }: Props): JSX.Element {
   const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
 
   const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.name === selectedCity);
@@ -30,6 +31,10 @@ function OfferPage({ offers, selectedCity, comments }: Props): JSX.Element {
   const { id: offerId } = useParams<{ id: string }>();
   const offer = offers.find((of) => of.id.toString() === offerId) || {} as Offer;
   const { price, images, title, isPremium, type, bedrooms, maxAdults, rating, goods, host, description } = offer;
+
+  store.dispatch(fetchCommentsAction(Number(offerId)));
+
+  const comments = useAppSelector((state) => state.comments);
 
   const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.offerPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
 

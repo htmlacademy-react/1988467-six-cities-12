@@ -25,14 +25,14 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
   }
 );
 
-export const fetchCommentsAction = createAsyncThunk<void, undefined, {
+export const fetchCommentsAction = createAsyncThunk<void, number, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'fetchComments',
-  async (_arg, { dispatch, extra: api }) => {
-    const { data } = await api.get<Review[]>(APIRoute.Comments);
+  async (id, { dispatch, extra: api }) => {
+    const { data } = await api.get<Review[]>(`/comments/${id}`);
     dispatch(loadCommentsAction(data));
   }
 );
