@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCityAction, changeSortTypeAction, loadCommentsAction, loadOffersAction, requireAuthorizationAction, saveLoginAction, setErrorAction, setOffersDataLoadingStatusAction } from '../actions/actions';
+import { changeCityAction, changeSortTypeAction, loadCommentsAction, loadOffersAction, loadSelectedOfferAction, requireAuthorizationAction, saveLoginAction, setErrorAction, setOffersDataLoadingStatusAction } from '../actions/actions';
 import { AuthorizationStatus, SORT_TYPE_ACTIONS } from '../../const';
 import { Offer } from '../../types/offer';
 import { CityFilter } from '../../types/city';
@@ -16,6 +16,7 @@ type InitialState = {
   authorizationStatus: AuthorizationStatus;
   login: string | null;
   comments: Review[];
+  selectedOffer: Offer | null;
 }
 
 const initialState: InitialState = {
@@ -28,6 +29,7 @@ const initialState: InitialState = {
   authorizationStatus: AuthorizationStatus.Unknown,
   login: null,
   comments: [],
+  selectedOffer: null,
 };
 
 const sortOffers = (filteredOffers: Offer[], sortType: OfferSortType): Offer[] => {
@@ -72,6 +74,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadCommentsAction, (state, action) => {
       state.comments = action.payload;
+    })
+    .addCase(loadSelectedOfferAction, (state, action) => {
+      state.selectedOffer = action.payload;
     });
 });
 

@@ -28,3 +28,5 @@ export const requireAuthorizationAction = createAction<AuthorizationStatus>('req
 export const saveLoginAction = createAction<string>('saveLogin');
 
 export const loadCommentsAction = createAction<Review[]>('loadComments');
+
+export const loadSelectedOfferAction = createAction<Offer>('loadSelectedOffer');

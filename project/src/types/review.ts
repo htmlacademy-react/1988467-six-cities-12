@@ -12,6 +12,7 @@ export type Review = {
 }
 
 export type NewComment = {
+  offerId: string;
   rating: number;
-  review: string;
+  comment: string;
 }
