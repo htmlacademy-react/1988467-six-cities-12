@@ -9,6 +9,9 @@ import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import { useEffect } from 'react';
+import { store } from '../../store';
+import { fetchOffersAction } from '../../store/actions/api-actions';
 
 function App(): JSX.Element {
 
@@ -18,10 +21,15 @@ function App(): JSX.Element {
   const selectedSortType = useAppSelector((state) => state.sortType);
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const nearPlaces = useAppSelector((state) => state.nearPlaces);
 
-  if(isOffersDataLoading) {
+  useEffect(() => {
+    store.dispatch(fetchOffersAction());
+  }, []);
+
+  if (isOffersDataLoading) {
     return (
-      <LoadingScreen/>
+      <LoadingScreen />
     );
   }
 
@@ -39,7 +47,7 @@ function App(): JSX.Element {
                 </PrivateRoute>
               }
             />
-            <Route path={AppRoute.Room} element={<OfferPage offers={filteredOffers} selectedCity={selectedCity} />} />
+            <Route path={AppRoute.Room} element={<OfferPage offers={nearPlaces} selectedCity={selectedCity} authorizationStatus={authorizationStatus} />} />
           </Route>
           <Route path='*' element={<NotFoundPage />} />
         </Routes>

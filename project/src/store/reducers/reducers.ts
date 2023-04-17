@@ -1,9 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCityAction, changeSortTypeAction, loadOffersAction, requireAuthorizationAction, saveLoginAction, setErrorAction, setOffersDataLoadingStatusAction } from '../actions/actions';
+import { changeCityAction, changeSortTypeAction, loadCommentsAction, loadNearPlacesAction, loadOffersAction, loadSelectedOfferAction, requireAuthorizationAction, saveLoginAction, setErrorAction, setOffersDataLoadingStatusAction } from '../actions/actions';
 import { AuthorizationStatus, SORT_TYPE_ACTIONS } from '../../const';
 import { Offer } from '../../types/offer';
 import { CityFilter } from '../../types/city';
 import { OfferSortType } from '../../types/sort';
+import { Review } from '../../types/review';
 
 type InitialState = {
   city: CityFilter;
@@ -14,6 +15,9 @@ type InitialState = {
   isOffersDataLoading: boolean;
   authorizationStatus: AuthorizationStatus;
   login: string | null;
+  comments: Review[];
+  selectedOffer: Offer | null;
+  nearPlaces: Offer[];
 }
 
 const initialState: InitialState = {
@@ -25,6 +29,9 @@ const initialState: InitialState = {
   isOffersDataLoading: false,
   authorizationStatus: AuthorizationStatus.Unknown,
   login: null,
+  comments: [],
+  selectedOffer: null,
+  nearPlaces: [],
 };
 
 const sortOffers = (filteredOffers: Offer[], sortType: OfferSortType): Offer[] => {
@@ -66,6 +73,15 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(saveLoginAction, (state, action) => {
       state.login = action.payload;
+    })
+    .addCase(loadCommentsAction, (state, action) => {
+      state.comments = action.payload;
+    })
+    .addCase(loadSelectedOfferAction, (state, action) => {
+      state.selectedOffer = action.payload;
+    })
+    .addCase(loadNearPlacesAction, (state, action) => {
+      state.nearPlaces = action.payload;
     });
 });
 

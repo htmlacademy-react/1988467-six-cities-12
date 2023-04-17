@@ -98,6 +98,7 @@ export enum APIRoute {
   SelectedOffer = '/hotels/{hotelId}',
   Login = '/login',
   Logout = '/logout',
+  Comments = '/comments/1',
 }
 
 export const CITIES_DATA: City[] = [

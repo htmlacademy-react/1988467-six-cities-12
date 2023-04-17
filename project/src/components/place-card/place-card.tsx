@@ -12,11 +12,14 @@ type PlaceCardProps = {
 function getElementToClassName(className: string, offer: Offer) {
   switch (className) {
     case CLASS_NAME_LIST.mainPage:
-      return (
-        <div className="place-card__mark">
-          <span>{offer.isPremium ? 'Premium' : ''}</span>
-        </div>
-      );
+      if (offer.isPremium) {
+        return (
+          <div className="place-card__mark">
+            <span>Premium</span>
+          </div>
+        );
+      }
+      return '';
     case CLASS_NAME_LIST.offerPage:
       return null;
   }

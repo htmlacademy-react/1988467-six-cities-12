@@ -1,8 +1,18 @@
 export type Review = {
   id: number;
-  picture: string;
-  userName: string;
   rating: number;
-  reviewDate: string;
+  date: string;
+  comment: string;
+  user: {
+    avatarUrl: string;
+    id: number;
+    isPro: boolean;
+    name: string;
+  };
+}
+
+export type NewComment = {
+  offerId: string;
+  rating: number;
   comment: string;
 }

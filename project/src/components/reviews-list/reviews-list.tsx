@@ -5,8 +5,7 @@ type ReviewsListProps = {
   reviews: Review[];
 }
 
-function ReviewsList(props: ReviewsListProps): JSX.Element {
-  const { reviews } = props;
+function ReviewsList({ reviews }: ReviewsListProps): JSX.Element {
   const reviewsList = reviews.map((review) => <ReviewsItem key={review.id.toString()} review={review}/>);
   return (
     <ul className="reviews__list">

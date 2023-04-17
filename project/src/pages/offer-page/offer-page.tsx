@@ -5,17 +5,22 @@ import { useParams } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
-import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
-import { useState } from 'react';
+import { AuthorizationStatus, CLASS_NAME_LIST, MAP_SIZE } from '../../const';
+import { useEffect, useState } from 'react';
 import Map from '../../components/map/map';
 import { CITIES_DATA } from '../../const';
+import { useAppSelector } from '../../hooks';
+import { fetchCommentsAction, fetchNearPlacesAction, fetchSelectedOfferAction } from '../../store/actions/api-actions';
+import { store } from '../../store';
+import Authorization from '../../components/authorization/authorization';
 
 type Props = {
   offers: Offer[];
   selectedCity: string;
+  authorizationStatus: AuthorizationStatus;
 }
 
-function OfferPage({ offers, selectedCity }: Props): JSX.Element {
+function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.Element {
   const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
 
   const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.name === selectedCity);
@@ -26,10 +31,25 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
   };
 
   const { id: offerId } = useParams<{ id: string }>();
-  const offer = offers.find((of) => of.id.toString() === offerId) || {} as Offer;
-  const { price, images, title, isPremium, type, bedrooms, maxAdults, rating, goods, host, description, reviews } = offer;
 
-  const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.mainPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
+  useEffect(() => {
+    store.dispatch(fetchSelectedOfferAction(Number(offerId)));
+  }, [offerId]);
+
+  useEffect(() => {
+    store.dispatch(fetchNearPlacesAction(Number(offerId)));
+  }, [offerId]);
+
+  const offer = useAppSelector((state) => state.selectedOffer);
+  const { price, images, title, isPremium, type, bedrooms, maxAdults, rating, goods, host, description } = offer || {};
+
+  useEffect(() => {
+    store.dispatch(fetchCommentsAction(Number(offerId)));
+  }, [offerId]);
+
+  const comments = useAppSelector((state) => state.comments);
+
+  const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.offerPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
 
   return (
     <div className="page">
@@ -41,21 +61,7 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
           <div className="header__wrapper">
             <Logo />
             <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
+              <Authorization authorizationStatus={authorizationStatus} />
             </nav>
           </div>
         </div>
@@ -66,7 +72,7 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
           <div className="property__gallery-container container">
             <div className="property__gallery">
               {
-                images.map((image, index) => {
+                images?.map((image, index) => {
                   const keyValue = index.toString();
                   return (
                     <div key={keyValue} className="property__image-wrapper">
@@ -95,7 +101,7 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{ width: `${100 / 5 * Math.round(rating)}%` }}></span>
+                  <span style={{ width: `${100 / 5 * Math.round(rating || 0)}%` }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="property__rating-value rating__value">{rating}</span>
@@ -105,10 +111,10 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
                   {type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {`${bedrooms} ${bedrooms === 1 ? 'Bedroom' : 'Bedrooms'}`}
+                  {`${bedrooms || 0} ${bedrooms === 1 ? 'Bedroom' : 'Bedrooms'}`}
                 </li>
                 <li className="property__feature property__feature--adults">
-                  {`Max ${maxAdults} ${maxAdults === 1 ? 'adult' : 'adults'}`}
+                  {`Max ${maxAdults || 0} ${maxAdults === 1 ? 'adult' : 'adults'}`}
                 </li>
               </ul>
               <div className="property__price">
@@ -119,7 +125,7 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
                   {
-                    goods.map((insideItem, index) => {
+                    goods?.map((insideItem, index) => {
                       const keyValue = index.toString();
                       return (
                         <li key={keyValue} className="property__inside-item">
@@ -134,13 +140,13 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src={host.avatarUrl} width="74" height="74" alt="Host avatar" />
+                    <img className="property__avatar user__avatar" src={host?.avatarUrl} width="74" height="74" alt="Host avatar" />
                   </div>
                   <span className="property__user-name">
-                    {host.name}
+                    {host?.name}
                   </span>
                   <span className="property__user-status">
-                    {host.isPro ? 'Pro' : ''}
+                    {host?.isPro ? 'Pro' : ''}
                   </span>
                 </div>
                 <div className="property__description">
@@ -153,9 +159,9 @@ function OfferPage({ offers, selectedCity }: Props): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-                <ReviewsList reviews={reviews} />
-                <CommentForm />
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
+                <ReviewsList reviews={comments} />
+                {authorizationStatus === AuthorizationStatus.Auth ? <CommentForm offerId={offerId || ''} /> : ''}
               </section>
             </div>
           </div>

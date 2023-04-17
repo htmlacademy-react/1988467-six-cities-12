@@ -1,28 +1,37 @@
-import { AuthorizationStatus } from '../../const';
-import { useAppSelector } from '../../hooks';
+import { Link } from 'react-router-dom';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { logoutAction } from '../../store/actions/api-actions';
 
 type AuthorizationProps = {
   authorizationStatus: AuthorizationStatus;
 }
 
-function Authorization({authorizationStatus}: AuthorizationProps): JSX.Element {
+function Authorization({ authorizationStatus }: AuthorizationProps): JSX.Element {
   const loginEmail = useAppSelector((state) => state.login);
+  const dispatch = useAppDispatch();
 
-  if(authorizationStatus === AuthorizationStatus.Auth) {
+  if (authorizationStatus === AuthorizationStatus.Auth) {
     return (
       <ul className="header__nav-list">
         <li className="header__nav-item user">
-          <a className="header__nav-link header__nav-link--profile" href="/">
+          <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
             <div className="header__avatar-wrapper user__avatar-wrapper">
             </div>
             <span className="header__user-name user__name">{loginEmail}</span>
             <span className="header__favorite-count">3</span>
-          </a>
+          </Link>
         </li>
         <li className="header__nav-item">
-          <a className="header__nav-link" href="/">
-            <span className="header__signout">Sign out</span>
-          </a>
+          <Link className="header__nav-link" to={AppRoute.Main}>
+            <span className="header__signout"
+              onClick={(evt) => {
+                evt.preventDefault();
+                dispatch(logoutAction());
+              }}
+            >Sign out
+            </span>
+          </Link>
         </li>
       </ul>
     );
@@ -31,11 +40,11 @@ function Authorization({authorizationStatus}: AuthorizationProps): JSX.Element {
   return (
     <ul className="header__nav-list">
       <li className="header__nav-item user">
-        <a className="header__nav-link header__nav-link--profile" href="/login">
+        <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Login}>
           <div className="header__avatar-wrapper user__avatar-wrapper">
           </div>
           <span className="header__login">Sign in</span>
-        </a>
+        </Link>
       </li>
     </ul>
   );
