@@ -3,8 +3,6 @@ import { Offer } from './types/offer';
 
 const RENTAL_OFFERS_COUNT = 312;
 
-const TIMEOUT_SHOW_ERROR = 2000;
-
 const RATINGS = [
   {
     value: 5,
@@ -152,4 +150,10 @@ export const CITIES_DATA: City[] = [
   }
 ];
 
-export { RATINGS, CLASS_NAME_LIST, MAP_SIZE, CITIES, SORT_TYPE_ACTIONS, TIMEOUT_SHOW_ERROR };
+export enum NameSpace {
+  User = 'USER',
+  OffersData = 'OFFERS_DATA',
+  CurrentOfferData = 'CURRENT_OFFER_DATA',
+}
+
+export { RATINGS, CLASS_NAME_LIST, MAP_SIZE, CITIES, SORT_TYPE_ACTIONS };

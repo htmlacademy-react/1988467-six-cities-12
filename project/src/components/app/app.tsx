@@ -13,16 +13,19 @@ import { useEffect } from 'react';
 import { store } from '../../store';
 import { fetchLoginAction, fetchOffersAction } from '../../store/actions/api-actions';
 import PrivateRouteLogin from '../private-route-login/private-route-login';
+import { getCity, getFilteredOffers, getOffers, getOffersDataLoadingStatus, getSortType } from '../../store/offers-data/offers-data-selectors';
+import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
+import { getNearPlaces } from '../../store/current-offer-data/curret-offer-data-selectors';
 
 function App(): JSX.Element {
 
-  const filteredOffers = useAppSelector((state) => state.filteredOffers);
-  const allOffers = useAppSelector((state) => state.offers);
-  const selectedCity = useAppSelector((state) => state.city);
-  const selectedSortType = useAppSelector((state) => state.sortType);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const nearPlaces = useAppSelector((state) => state.nearPlaces);
+  const filteredOffers = useAppSelector(getFilteredOffers);
+  const allOffers = useAppSelector(getOffers);
+  const selectedCity = useAppSelector(getCity);
+  const selectedSortType = useAppSelector(getSortType);
+  const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const nearPlaces = useAppSelector(getNearPlaces);
 
   useEffect(() => {
     store.dispatch(fetchOffersAction());

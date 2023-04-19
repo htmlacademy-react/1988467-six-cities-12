@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/actions/api-actions';
+import { getLogin } from '../../store/user-process/user-process-selectors';
 
 type AuthorizationProps = {
   authorizationStatus: AuthorizationStatus;
@@ -10,7 +11,7 @@ type AuthorizationProps = {
 function Authorization({ authorizationStatus }: AuthorizationProps): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const loginEmail = useAppSelector((state) => state.login);
+  const loginEmail = useAppSelector(getLogin);
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return (

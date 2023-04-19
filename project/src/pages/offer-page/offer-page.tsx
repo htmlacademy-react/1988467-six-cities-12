@@ -13,6 +13,7 @@ import { useAppSelector } from '../../hooks';
 import { fetchCommentsAction, fetchNearPlacesAction, fetchSelectedOfferAction } from '../../store/actions/api-actions';
 import { store } from '../../store';
 import Authorization from '../../components/authorization/authorization';
+import { getComments, getSelectedOffer } from '../../store/current-offer-data/curret-offer-data-selectors';
 
 type Props = {
   offers: Offer[];
@@ -40,14 +41,14 @@ function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.El
     store.dispatch(fetchSelectedOfferAction(Number(offerId)));
   }, [offerId]);
 
-  const offer = useAppSelector((state) => state.selectedOffer);
+  const offer = useAppSelector(getSelectedOffer);
   const { price, images, title, isPremium, type, bedrooms, maxAdults, rating, goods, host, description } = offer || {};
 
   useEffect(() => {
     store.dispatch(fetchCommentsAction(Number(offerId)));
   }, [offerId]);
 
-  const comments = useAppSelector((state) => state.comments);
+  const comments = useAppSelector(getComments);
 
   const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.offerPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
 
