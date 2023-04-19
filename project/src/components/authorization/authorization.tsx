@@ -8,8 +8,9 @@ type AuthorizationProps = {
 }
 
 function Authorization({ authorizationStatus }: AuthorizationProps): JSX.Element {
-  const loginEmail = useAppSelector((state) => state.login);
   const dispatch = useAppDispatch();
+
+  const loginEmail = useAppSelector((state) => state.login);
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return (

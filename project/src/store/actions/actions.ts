@@ -32,3 +32,5 @@ export const loadCommentsAction = createAction<Review[]>('loadComments');
 export const loadSelectedOfferAction = createAction<Offer>('loadSelectedOffer');
 
 export const loadNearPlacesAction = createAction<Offer[]>('loadNearPlaces');
+
+// export const redirectToRouteAction = createAction<AppRoute>('redirectToRoute');

@@ -21,6 +21,12 @@ type Props = {
 }
 
 function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.Element {
+  const { id: offerId } = useParams<{ id: string }>();
+
+  useEffect(() => {
+    store.dispatch(fetchNearPlacesAction(Number(offerId)));
+  }, [offerId]);
+
   const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
 
   const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.name === selectedCity);
@@ -30,14 +36,8 @@ function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.El
     setActiveCard(currentCard);
   };
 
-  const { id: offerId } = useParams<{ id: string }>();
-
   useEffect(() => {
     store.dispatch(fetchSelectedOfferAction(Number(offerId)));
-  }, [offerId]);
-
-  useEffect(() => {
-    store.dispatch(fetchNearPlacesAction(Number(offerId)));
   }, [offerId]);
 
   const offer = useAppSelector((state) => state.selectedOffer);

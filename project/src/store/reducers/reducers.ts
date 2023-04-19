@@ -5,6 +5,9 @@ import { Offer } from '../../types/offer';
 import { CityFilter } from '../../types/city';
 import { OfferSortType } from '../../types/sort';
 import { Review } from '../../types/review';
+import { getToken } from '../../services/token';
+
+const token = getToken();
 
 type InitialState = {
   city: CityFilter;
@@ -27,7 +30,7 @@ const initialState: InitialState = {
   sortType: 'sortPopular',
   error: null,
   isOffersDataLoading: false,
-  authorizationStatus: AuthorizationStatus.Unknown,
+  authorizationStatus: token ? AuthorizationStatus.Auth : AuthorizationStatus.NoAuth,
   login: null,
   comments: [],
   selectedOffer: null,
