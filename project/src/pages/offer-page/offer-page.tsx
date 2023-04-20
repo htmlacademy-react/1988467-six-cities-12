@@ -13,6 +13,7 @@ import { useAppSelector } from '../../hooks';
 import { fetchCommentsAction, fetchNearPlacesAction, fetchSelectedOfferAction } from '../../store/actions/api-actions';
 import { store } from '../../store';
 import Authorization from '../../components/authorization/authorization';
+import { getComments, getSelectedOffer } from '../../store/current-offer-data/curret-offer-data-selectors';
 
 type Props = {
   offers: Offer[];
@@ -21,6 +22,12 @@ type Props = {
 }
 
 function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.Element {
+  const { id: offerId } = useParams<{ id: string }>();
+
+  useEffect(() => {
+    store.dispatch(fetchNearPlacesAction(Number(offerId)));
+  }, [offerId]);
+
   const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
 
   const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.name === selectedCity);
@@ -30,24 +37,18 @@ function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.El
     setActiveCard(currentCard);
   };
 
-  const { id: offerId } = useParams<{ id: string }>();
-
   useEffect(() => {
     store.dispatch(fetchSelectedOfferAction(Number(offerId)));
   }, [offerId]);
 
-  useEffect(() => {
-    store.dispatch(fetchNearPlacesAction(Number(offerId)));
-  }, [offerId]);
-
-  const offer = useAppSelector((state) => state.selectedOffer);
+  const offer = useAppSelector(getSelectedOffer);
   const { price, images, title, isPremium, type, bedrooms, maxAdults, rating, goods, host, description } = offer || {};
 
   useEffect(() => {
     store.dispatch(fetchCommentsAction(Number(offerId)));
   }, [offerId]);
 
-  const comments = useAppSelector((state) => state.comments);
+  const comments = useAppSelector(getComments);
 
   const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.offerPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
 

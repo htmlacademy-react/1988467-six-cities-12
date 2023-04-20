@@ -7,11 +7,11 @@ import { useState } from 'react';
 import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
 import CitiesList from '../../components/cities-list/cities-list';
 import { useAppDispatch } from '../../hooks';
-import { changeCityAction, changeSortTypeAction } from '../../store/actions/actions';
 import SortsContainer from '../../components/sorts-container/sorts-container';
 import { CityFilter } from '../../types/city';
 import { OfferSortType } from '../../types/sort';
 import Authorization from '../../components/authorization/authorization';
+import { changeCityAction, changeSortTypeAction } from '../../store/offers-data/offers-data-slice';
 
 type MainPageProps = {
   rentalOffersCount: number;
@@ -44,7 +44,7 @@ function MainPage({ rentalOffersCount, offers, selectedCity, selectedSortType, a
           <div className="header__wrapper">
             <Logo />
             <nav className="header__nav">
-              <Authorization authorizationStatus={authorizationStatus}/>
+              <Authorization authorizationStatus={authorizationStatus} />
             </nav>
           </div>
         </div>
