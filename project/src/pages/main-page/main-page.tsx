@@ -6,12 +6,14 @@ import { AuthorizationStatus, CITIES_DATA } from '../../const';
 import { useState } from 'react';
 import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
 import CitiesList from '../../components/cities-list/cities-list';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import SortsContainer from '../../components/sorts-container/sorts-container';
 import { CityFilter } from '../../types/city';
 import { OfferSortType } from '../../types/sort';
 import Authorization from '../../components/authorization/authorization';
 import { changeCityAction, changeSortTypeAction } from '../../store/offers-data/offers-data-slice';
+import { getErrorStatus } from '../../store/offers-data/offers-data-selectors';
+import EmptyMainPage from '../empty-main-page/empty-main-page';
 
 type MainPageProps = {
   rentalOffersCount: number;
@@ -22,6 +24,7 @@ type MainPageProps = {
 }
 
 function MainPage({ rentalOffersCount, offers, selectedCity, selectedSortType, authorizationStatus }: MainPageProps): JSX.Element {
+  const hasError = useAppSelector(getErrorStatus);
   const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
 
   const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.name === selectedCity);
@@ -36,6 +39,12 @@ function MainPage({ rentalOffersCount, offers, selectedCity, selectedSortType, a
   const onSortTypeChange = (sortType: OfferSortType) => dispatch(changeSortTypeAction(sortType));
 
   const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.mainPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
+
+  if (hasError) {
+    return (
+      <EmptyMainPage authorizationStatus={authorizationStatus} onCityChange={onCityChange} />
+    );
+  }
 
   return (
     <div className="page page--gray page--main">

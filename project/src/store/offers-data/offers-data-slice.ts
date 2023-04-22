@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { OffersData } from '../../types/state';
 import { NameSpace, SORT_TYPE_ACTIONS } from '../../const';
-import { fetchOffersAction } from '../actions/api-actions';
+import { fetchFavoritesAction, fetchOffersAction } from '../actions/api-actions';
 import { Offer } from '../../types/offer';
 import { OfferSortType } from '../../types/sort';
 import { CityFilter } from '../../types/city';
@@ -13,6 +13,7 @@ const initialState: OffersData = {
   sortType: 'sortPopular',
   hasError: false,
   isOffersDataLoading: false,
+  favorites: [],
 };
 
 const sortOffers = (filteredOffers: Offer[], sortType: OfferSortType): Offer[] => {
@@ -55,9 +56,12 @@ export const offersData = createSlice({
       .addCase(fetchOffersAction.pending, (state) => {
         state.isOffersDataLoading = true;
       })
-      .addCase(fetchOffersAction.rejected, (state, action) => {
+      .addCase(fetchOffersAction.rejected, (state) => {
         state.isOffersDataLoading = false;
         state.hasError = true;
+      })
+      .addCase(fetchFavoritesAction.fulfilled, (state, action) => {
+        state.favorites = action.payload;
       });
   }
 });

@@ -21,6 +21,7 @@ export type OffersData = {
   sortType: OfferSortType;
   hasError: boolean;
   isOffersDataLoading: boolean;
+  favorites: Offer[];
 }
 
 export type CurrentOfferData = {

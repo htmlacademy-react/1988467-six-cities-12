@@ -11,16 +11,15 @@ import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import { useEffect } from 'react';
 import { store } from '../../store';
-import { fetchLoginAction, fetchOffersAction } from '../../store/actions/api-actions';
+import { fetchFavoritesAction, fetchLoginAction, fetchOffersAction } from '../../store/actions/api-actions';
 import PrivateRouteLogin from '../private-route-login/private-route-login';
-import { getCity, getFilteredOffers, getOffers, getOffersDataLoadingStatus, getSortType } from '../../store/offers-data/offers-data-selectors';
+import { getCity, getFavorites, getFilteredOffers, getOffersDataLoadingStatus, getSortType } from '../../store/offers-data/offers-data-selectors';
 import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
 import { getNearPlaces } from '../../store/current-offer-data/curret-offer-data-selectors';
-
 function App(): JSX.Element {
 
   const filteredOffers = useAppSelector(getFilteredOffers);
-  const allOffers = useAppSelector(getOffers);
+  const favoriteOffers = useAppSelector(getFavorites);
   const selectedCity = useAppSelector(getCity);
   const selectedSortType = useAppSelector(getSortType);
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
@@ -32,8 +31,12 @@ function App(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    store.dispatch(fetchLoginAction());
+    store.dispatch(fetchFavoritesAction());
   }, []);
+
+  useEffect(() => {
+    store.dispatch(fetchLoginAction());
+  }, [authorizationStatus]);
 
   if (isOffersDataLoading) {
     return (
@@ -57,7 +60,7 @@ function App(): JSX.Element {
             <Route path={AppRoute.Favorites}
               element={
                 <PrivateRoute authorizationStatus={authorizationStatus}>
-                  <FavoritesPage offers={allOffers} />
+                  <FavoritesPage offers={favoriteOffers} authorizationStatus={authorizationStatus} />
                 </PrivateRoute>
               }
             />

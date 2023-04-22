@@ -97,6 +97,7 @@ export enum APIRoute {
   Login = '/login',
   Logout = '/logout',
   Comments = '/comments/1',
+  Favorites = '/favorite',
 }
 
 export const CITIES_DATA: City[] = [
