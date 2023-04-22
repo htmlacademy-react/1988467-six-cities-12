@@ -10,3 +10,4 @@ export const getFilteredOffers = (state: State): Offer[] => state[NameSpace.Offe
 export const getSortType = (state: State): OfferSortType => state[NameSpace.OffersData].sortType;
 export const getOffersDataLoadingStatus = (state: State): boolean => state[NameSpace.OffersData].isOffersDataLoading;
 export const getErrorStatus = (state: State): boolean => state[NameSpace.OffersData].hasError;
+export const getFavorites = (state: State): Offer[] => state[NameSpace.OffersData].favorites;

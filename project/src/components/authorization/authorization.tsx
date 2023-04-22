@@ -3,6 +3,7 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/actions/api-actions';
 import { getLogin } from '../../store/user-process/user-process-selectors';
+import { getFavorites } from '../../store/offers-data/offers-data-selectors';
 
 type AuthorizationProps = {
   authorizationStatus: AuthorizationStatus;
@@ -12,6 +13,7 @@ function Authorization({ authorizationStatus }: AuthorizationProps): JSX.Element
   const dispatch = useAppDispatch();
 
   const loginEmail = useAppSelector(getLogin);
+  const favoriteOffers = useAppSelector(getFavorites);
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return (
@@ -21,7 +23,7 @@ function Authorization({ authorizationStatus }: AuthorizationProps): JSX.Element
             <div className="header__avatar-wrapper user__avatar-wrapper">
             </div>
             <span className="header__user-name user__name">{loginEmail}</span>
-            <span className="header__favorite-count">3</span>
+            <span className="header__favorite-count">{favoriteOffers.length}</span>
           </Link>
         </li>
         <li className="header__nav-item">

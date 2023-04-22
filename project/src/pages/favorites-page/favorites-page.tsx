@@ -1,14 +1,17 @@
 import Logo from '../../components/logo/logo';
 import { Helmet } from 'react-helmet-async';
 import { Offer } from '../../types/offer';
-import { Link } from 'react-router-dom';
+import Authorization from '../../components/authorization/authorization';
+import { AuthorizationStatus } from '../../const';
+import FavoritesSorts from '../../components/favorites-sorts/favorites-sort';
 
 type FavoritesPageProps = {
   offers: Offer[];
+  authorizationStatus: AuthorizationStatus;
 }
 
 function FavoritesPage(props: FavoritesPageProps): JSX.Element {
-  const { offers } = props;
+  const { offers, authorizationStatus } = props;
 
   return (
     <div className="page">
@@ -20,21 +23,7 @@ function FavoritesPage(props: FavoritesPageProps): JSX.Element {
           <div className="header__wrapper">
             <Logo />
             <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="/">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="/">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
+              <Authorization authorizationStatus={authorizationStatus} />
             </nav>
           </div>
         </div>
@@ -42,63 +31,21 @@ function FavoritesPage(props: FavoritesPageProps): JSX.Element {
 
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            <ul className="favorites__list">
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="/">
-                      <span>Amsterdam</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="favorites__places">
-                  {offers.map((offer) => {
-                    const { id, images, title, isPremium, type, rating, price, isFavorite } = offer;
-                    const keyValue = offer.id;
-
-                    return (isFavorite ?
-                      <article key={keyValue} className="favorites__card place-card">
-                        <div className="place-card__mark">
-                          <span>{isPremium ? 'Premium' : ''}</span>
-                        </div>
-                        <div className="favorites__image-wrapper place-card__image-wrapper">
-                          <Link to={`/offer/${id}`}>
-                            <img className="place-card__image" src={images[0]} width="150" height="110" alt="Place image" />
-                          </Link>
-                        </div>
-                        <div className="favorites__card-info place-card__info">
-                          <div className="place-card__price-wrapper">
-                            <div className="place-card__price">
-                              <b className="place-card__price-value">&euro;{price}</b>
-                              <span className="place-card__price-text">&#47;&nbsp;night</span>
-                            </div>
-                            <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
-                              <svg className="place-card__bookmark-icon" width="18" height="19">
-                                <use xlinkHref="#icon-bookmark"></use>
-                              </svg>
-                              <span className="visually-hidden">In bookmarks</span>
-                            </button>
-                          </div>
-                          <div className="place-card__rating rating">
-                            <div className="place-card__stars rating__stars">
-                              <span style={{ width: `${100 / 5 * Math.round(rating)}%` }}></span>
-                              <span className="visually-hidden">Rating</span>
-                            </div>
-                          </div>
-                          <h2 className="place-card__name">
-                            <Link to={`/offer/${id}`}>{title}</Link>
-                          </h2>
-                          <p className="place-card__type">{type}</p>
-                        </div>
-                      </article>
-                      : null);
-                  })}
-                </div>
-              </li>
-            </ul>
-          </section>
+          {offers.length > 0 ?
+            <section className="favorites">
+              <h1 className="favorites__title">Saved listing</h1>
+              <ul className="favorites__list">
+                <FavoritesSorts offers={offers} />
+              </ul>
+            </section>
+            :
+            <section className="favorites favorites--empty">
+              <h1 className="visually-hidden">Favorites (empty)</h1>
+              <div className="favorites__status-wrapper">
+                <b className="favorites__status">Nothing yet saved.</b>
+                <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
+              </div>
+            </section>}
         </div>
       </main>
       <footer className="footer container">

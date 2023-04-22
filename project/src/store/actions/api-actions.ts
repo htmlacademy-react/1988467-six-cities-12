@@ -123,3 +123,29 @@ export const sendNewCommentAction = createAsyncThunk<void, NewCommentParams, {
     }
   }
 );
+
+export const fetchFavoritesAction = createAsyncThunk<Offer[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'fetchFavorites',
+  async (_arg, { extra: api }) => {
+    const { data } = await api.get<Offer[]>(APIRoute.Favorites);
+    return data;
+  }
+);
+
+type FavoriteStatusParams = { favoriteStatus: number; id: number };
+
+export const sendFavoriteStatusAction = createAsyncThunk<void, FavoriteStatusParams, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'sendFavoriteStatus',
+  async ({ favoriteStatus, id, }, { dispatch, extra: api }) => {
+    await api.post<Offer>(`/favorite/${id}/${favoriteStatus}`);
+    dispatch(fetchFavoritesAction());
+  }
+);
