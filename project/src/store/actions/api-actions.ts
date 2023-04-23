@@ -106,7 +106,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   }
 );
 
-type NewCommentParams = NewComment & { onSuccess(): void; onError(): void }
+type NewCommentParams = NewComment & { onSuccess(): void }
 
 export const sendNewCommentAction = createAsyncThunk<void, NewCommentParams, {
   dispatch: AppDispatch;
@@ -114,13 +114,9 @@ export const sendNewCommentAction = createAsyncThunk<void, NewCommentParams, {
   extra: AxiosInstance;
 }>(
   'sendNewComment',
-  async ({ comment, rating, offerId, onSuccess, onError }, { extra: api }) => {
-    try {
-      await api.post<NewComment>(`/comments/${offerId}`, { comment, rating });
-      onSuccess();
-    } catch (e) {
-      onError();
-    }
+  async ({ comment, rating, offerId, onSuccess }, { extra: api }) => {
+    await api.post<NewComment>(`/comments/${offerId}`, { comment, rating });
+    onSuccess();
   }
 );
 

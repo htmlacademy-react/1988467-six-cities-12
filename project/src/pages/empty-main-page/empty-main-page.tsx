@@ -7,9 +7,10 @@ import { CityFilter } from '../../types/city';
 type EmptyMainPageProps = {
   authorizationStatus: AuthorizationStatus;
   onCityChange: (city: CityFilter) => void;
+  selectedCity: CityFilter;
 }
 
-function EmptyMainPage({ authorizationStatus, onCityChange }: EmptyMainPageProps): JSX.Element {
+function EmptyMainPage({ authorizationStatus, onCityChange, selectedCity }: EmptyMainPageProps): JSX.Element {
 
   return (
     <div className="page page--gray page--main">
@@ -28,7 +29,7 @@ function EmptyMainPage({ authorizationStatus, onCityChange }: EmptyMainPageProps
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <CitiesList onCityChange={onCityChange} />
+            <CitiesList onCityChange={onCityChange} selectedCity={selectedCity} />
           </section>
         </div>
         <div className="cities">
