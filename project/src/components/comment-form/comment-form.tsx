@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent, useCallback } from 'react';
 import { NewComment } from '../../types/review';
 import { useAppDispatch } from '../../hooks';
-import { sendNewCommentAction } from '../../store/actions/api-actions';
+import { fetchCommentsAction, sendNewCommentAction } from '../../store/actions/api-actions';
 import RatingList from './rating-list';
 
 type CommentFormProps = {
@@ -25,17 +25,13 @@ function CommentForm({ offerId }: CommentFormProps) {
     }, []
   );
 
-  let message = '';
-
   const onSubmit = (newComment: NewComment) => {
     dispatch(sendNewCommentAction({
       ...newComment,
       onSuccess: () => {
         setRating(0);
         setComment('');
-        message = 'Comment send successful';
-      }, onError: () => {
-        message = 'Comment not send';
+        dispatch(fetchCommentsAction(Number(offerId)));
       }
     }));
   };
@@ -67,7 +63,6 @@ function CommentForm({ offerId }: CommentFormProps) {
         </p>
         <button className="reviews__submit form__submit button" type="submit" disabled={isDisabled}>Submit</button>
       </div>
-      <div>{message}</div>
     </form>
   );
 }

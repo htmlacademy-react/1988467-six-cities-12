@@ -15,6 +15,7 @@ type MapProps = {
     width: string;
     margin: string;
   };
+  selectedOffer: Offer | null;
 };
 
 const defaultCustomIcon = new Icon({
@@ -30,14 +31,23 @@ const currentCustomIcon = new Icon({
 });
 
 function Map(props: MapProps): JSX.Element {
-  const { city, points, activeCard, size } = props;
+  const { city, points, activeCard, size, selectedOffer } = props;
 
   const mapRef = useRef(null);
   const map = useMap({ mapRef, city });
 
+  let renderedPoints = points;
+  if (selectedOffer) {
+    renderedPoints = [...points, selectedOffer];
+  }
+  const renderedActiveCard = selectedOffer ? selectedOffer : activeCard;
+
   useEffect(() => {
+    const markerList = map?.getPane('markerPane');
+    markerList?.replaceChildren();
+
     if (map) {
-      points.forEach((point) => {
+      renderedPoints.forEach((point) => {
         const marker = new Marker({
           lat: point.location.latitude,
           lng: point.location.longitude
@@ -45,14 +55,14 @@ function Map(props: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            activeCard !== undefined && point.id === activeCard.id
+            renderedActiveCard !== undefined && point.id === renderedActiveCard.id
               ? currentCustomIcon
               : defaultCustomIcon
           )
           .addTo(map);
       });
     }
-  }, [map, points, activeCard]);
+  }, [map, renderedPoints, renderedActiveCard]);
 
 
   useEffect(() => {

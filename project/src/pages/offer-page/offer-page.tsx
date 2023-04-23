@@ -1,16 +1,16 @@
 import Logo from '../../components/logo/logo';
 import { Helmet } from 'react-helmet-async';
 import CommentForm from '../../components/comment-form/comment-form';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
-import { AuthorizationStatus, CLASS_NAME_LIST, MAP_SIZE } from '../../const';
+import { AppRoute, AuthorizationStatus, CLASS_NAME_LIST, MAP_SIZE } from '../../const';
 import { useEffect, useState } from 'react';
 import Map from '../../components/map/map';
 import { CITIES_DATA } from '../../const';
-import { useAppSelector } from '../../hooks';
-import { fetchCommentsAction, fetchNearPlacesAction, fetchSelectedOfferAction } from '../../store/actions/api-actions';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchCommentsAction, fetchNearPlacesAction, fetchSelectedOfferAction, sendFavoriteStatusAction } from '../../store/actions/api-actions';
 import { store } from '../../store';
 import Authorization from '../../components/authorization/authorization';
 import { getComments, getSelectedOffer } from '../../store/current-offer-data/curret-offer-data-selectors';
@@ -42,7 +42,7 @@ function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.El
   }, [offerId]);
 
   const offer = useAppSelector(getSelectedOffer);
-  const { price, images, title, isPremium, type, bedrooms, maxAdults, rating, goods, host, description } = offer || {};
+  const { price, images, title, isPremium, type, bedrooms, maxAdults, rating, goods, host, description, isFavorite, id } = offer || {};
 
   useEffect(() => {
     store.dispatch(fetchCommentsAction(Number(offerId)));
@@ -51,6 +51,17 @@ function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.El
   const comments = useAppSelector(getComments);
 
   const placeCardList = <PlaceCardList className={CLASS_NAME_LIST.offerPage} offers={offers} onPlaceCardHover={onPlaceCardHover} />;
+
+  const dispatch = useAppDispatch();
+  const [isFavoriteOffer, setFavorite] = useState(isFavorite);
+  const favoriteStatus = !isFavoriteOffer ? 1 : 0;
+
+  const favoriteHandler = () => {
+    setFavorite((prevState) => !prevState);
+    if (id) {
+      dispatch(sendFavoriteStatusAction({ favoriteStatus, id }));
+    }
+  };
 
   return (
     <div className="page">
@@ -86,19 +97,23 @@ function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.El
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
-              <div className="property__mark">
-                <span>{isPremium ? 'Premium' : ''}</span>
-              </div>
+              {isPremium ?
+                <div className="property__mark">
+                  <span>Premium</span>
+                </div>
+                : null}
               <div className="property__name-wrapper">
                 <h1 className="property__name">
                   {title}
                 </h1>
-                <button className="property__bookmark-button button" type="button">
-                  <svg className="property__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <Link to={`${authorizationStatus === AuthorizationStatus.Auth ? '' : AppRoute.Login}`}>
+                  <button className={`property__bookmark-button button ${(isFavorite || isFavoriteOffer) ? 'property__bookmark-button--active' : ''}`} type="button" onClick={favoriteHandler}>
+                    <svg className="property__bookmark-icon" width="31" height="33">
+                      <use xlinkHref="#icon-bookmark"></use>
+                    </svg>
+                    <span className="visually-hidden">To bookmarks</span>
+                  </button>
+                </Link>
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
@@ -167,7 +182,7 @@ function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.El
             </div>
           </div>
           <section className="property__map map">
-            {!!currentCity && <Map city={currentCity} points={offers} activeCard={activeCard} size={MAP_SIZE.offerPage} />}
+            {!!currentCity && <Map city={currentCity} points={offers} activeCard={activeCard} size={MAP_SIZE.offerPage} selectedOffer={offer} />}
           </section>
         </section>
         <div className="container">

@@ -42,7 +42,7 @@ function MainPage({ rentalOffersCount, offers, selectedCity, selectedSortType, a
 
   if (hasError) {
     return (
-      <EmptyMainPage authorizationStatus={authorizationStatus} onCityChange={onCityChange} />
+      <EmptyMainPage authorizationStatus={authorizationStatus} onCityChange={onCityChange} selectedCity={selectedCity} />
     );
   }
 
@@ -63,7 +63,7 @@ function MainPage({ rentalOffersCount, offers, selectedCity, selectedSortType, a
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <CitiesList onCityChange={onCityChange} />
+            <CitiesList onCityChange={onCityChange} selectedCity={selectedCity} />
           </section>
         </div>
         <div className="cities">
@@ -78,7 +78,7 @@ function MainPage({ rentalOffersCount, offers, selectedCity, selectedSortType, a
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                {!!currentCity && <Map city={currentCity} points={offers} activeCard={activeCard} size={MAP_SIZE.mainPage} />}
+                {!!currentCity && <Map city={currentCity} points={offers} activeCard={activeCard} size={MAP_SIZE.mainPage} selectedOffer={null} />}
               </section>
             </div>
           </div>

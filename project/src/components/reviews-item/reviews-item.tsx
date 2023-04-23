@@ -4,9 +4,16 @@ type ReviewsItemProps = {
   review: Review;
 }
 
+type DateOptions = {
+  year: 'numeric' | '2-digit' | undefined;
+  month: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long' | undefined;
+}
+
 function ReviewsItem({ review }: ReviewsItemProps): JSX.Element {
   const { id, user, rating, date, comment } = review;
   const { avatarUrl, name } = user;
+  const dateOptions: DateOptions = { year: 'numeric', month: 'long' };
+  const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(new Date(date));
 
   return (
     <li key={id} className="reviews__item">
@@ -28,7 +35,7 @@ function ReviewsItem({ review }: ReviewsItemProps): JSX.Element {
         <p className="reviews__text">
           {comment}
         </p>
-        <time className="reviews__time" dateTime={date}></time>
+        <time className="reviews__time" dateTime={date}>{formattedDate}</time>
       </div>
     </li>
   );

@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { MouseEvent, useState } from 'react';
-import { CLASS_NAME_LIST } from '../../const';
+import { AppRoute, AuthorizationStatus, CLASS_NAME_LIST } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { sendFavoriteStatusAction } from '../../store/actions/api-actions';
 
 type PlaceCardProps = {
   className: string;
   offer: Offer;
-  mouseOverHandler: (event: MouseEvent) => void;
+  mouseOverHandler: (event: MouseEvent) => void | undefined;
+  authorizationStatus: AuthorizationStatus;
 }
 
 function getElementToClassName(className: string, offer: Offer) {
@@ -29,7 +30,7 @@ function getElementToClassName(className: string, offer: Offer) {
 }
 
 function PlaceCard(props: PlaceCardProps): JSX.Element {
-  const { className, offer, mouseOverHandler } = props;
+  const { className, offer, mouseOverHandler, authorizationStatus } = props;
   const { id, images, title, type, rating, price, isFavorite } = offer;
 
   const dispatch = useAppDispatch();
@@ -56,12 +57,14 @@ function PlaceCard(props: PlaceCardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`place-card__bookmark-button button ${(isFavorite || isFavoriteOffer) ? 'place-card__bookmark-button--active' : ''}`} type="button" onClick={favoriteHandler}>
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">To bookmarks</span>
-          </button>
+          <Link to={`${authorizationStatus === AuthorizationStatus.Auth ? '' : AppRoute.Login}`}>
+            <button className={`place-card__bookmark-button button ${(isFavorite || isFavoriteOffer) ? 'place-card__bookmark-button--active' : ''}`} type="button" onClick={favoriteHandler}>
+              <svg className="place-card__bookmark-icon" width="18" height="19">
+                <use xlinkHref="#icon-bookmark"></use>
+              </svg>
+              <span className="visually-hidden">To bookmarks</span>
+            </button>
+          </Link>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

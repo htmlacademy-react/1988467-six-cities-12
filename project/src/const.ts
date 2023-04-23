@@ -1,8 +1,6 @@
 import { City, CityFilter } from './types/city';
 import { Offer } from './types/offer';
 
-const RENTAL_OFFERS_COUNT = 312;
-
 const RATINGS = [
   {
     value: 5,
@@ -25,10 +23,6 @@ const RATINGS = [
     title: 'terribly',
   },
 ];
-
-export const RentalInfo = {
-  RentalOffersCount: RENTAL_OFFERS_COUNT,
-} as const;
 
 export enum AppRoute {
   Favorites = '/favorites',
