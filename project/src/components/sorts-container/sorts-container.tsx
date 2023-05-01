@@ -23,7 +23,7 @@ function SortsContainer({ selectedSortType, onSortTypeChange }: SortsContainerPr
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      {isVisibleSorts && <Sorts onChangeVisibility={sortsHandler} onSortTypeChange={onSortTypeChange} />}
+      {isVisibleSorts && <Sorts onChangeVisibility={sortsHandler} onSortTypeChange={onSortTypeChange} selectedSortType={selectedSortType} />}
     </form>
   );
 }
