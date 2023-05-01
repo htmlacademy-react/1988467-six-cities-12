@@ -1,16 +1,14 @@
 import Authorization from '../../components/authorization/authorization';
 import CitiesList from '../../components/cities-list/cities-list';
 import Logo from '../../components/logo/logo';
-import { AuthorizationStatus } from '../../const';
 import { CityFilter } from '../../types/city';
 
 type EmptyMainPageProps = {
-  authorizationStatus: AuthorizationStatus;
   onCityChange: (city: CityFilter) => void;
   selectedCity: CityFilter;
 }
 
-function EmptyMainPage({ authorizationStatus, onCityChange, selectedCity }: EmptyMainPageProps): JSX.Element {
+function EmptyMainPage({ onCityChange, selectedCity }: EmptyMainPageProps): JSX.Element {
 
   return (
     <div className="page page--gray page--main">
@@ -19,7 +17,7 @@ function EmptyMainPage({ authorizationStatus, onCityChange, selectedCity }: Empt
           <div className="header__wrapper">
             <Logo />
             <nav className="header__nav">
-              <Authorization authorizationStatus={authorizationStatus} />
+              <Authorization />
             </nav>
           </div>
         </div>

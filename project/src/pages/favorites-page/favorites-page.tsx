@@ -1,17 +1,20 @@
 import Logo from '../../components/logo/logo';
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../types/offer';
 import Authorization from '../../components/authorization/authorization';
-import { AuthorizationStatus } from '../../const';
 import FavoritesSorts from '../../components/favorites-sorts/favorites-sort';
+import { useAppSelector } from '../../hooks';
+import { getFavorites } from '../../store/offers-data/offers-data-selectors';
+import { useEffect } from 'react';
+import { store } from '../../store';
+import { fetchFavoritesAction } from '../../store/actions/api-actions';
+import { Link } from 'react-router-dom';
 
-type FavoritesPageProps = {
-  offers: Offer[];
-  authorizationStatus: AuthorizationStatus;
-}
+function FavoritesPage(): JSX.Element {
+  const offers = useAppSelector(getFavorites);
 
-function FavoritesPage(props: FavoritesPageProps): JSX.Element {
-  const { offers, authorizationStatus } = props;
+  useEffect(() => {
+    store.dispatch(fetchFavoritesAction());
+  }, []);
 
   return (
     <div className="page">
@@ -23,7 +26,7 @@ function FavoritesPage(props: FavoritesPageProps): JSX.Element {
           <div className="header__wrapper">
             <Logo />
             <nav className="header__nav">
-              <Authorization authorizationStatus={authorizationStatus} />
+              <Authorization />
             </nav>
           </div>
         </div>
@@ -49,9 +52,9 @@ function FavoritesPage(props: FavoritesPageProps): JSX.Element {
         </div>
       </main>
       <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
+        <Link className="footer__logo-link" to="/">
           <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
-        </a>
+        </Link>
       </footer>
     </div>
   );

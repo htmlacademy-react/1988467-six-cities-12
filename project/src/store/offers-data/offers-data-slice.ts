@@ -50,8 +50,10 @@ export const offersData = createSlice({
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.isOffersDataLoading = false;
         state.offers = action.payload;
-        state.city = 'Paris';
+        // state.city = 'Paris';
         state.hasError = false;
+        state.filteredOffers = state.offers.filter((offer) => offer.city?.name === state.city);
+        state.filteredOffers = sortOffers(state.filteredOffers, state.sortType);
       })
       .addCase(fetchOffersAction.pending, (state) => {
         state.isOffersDataLoading = true;
