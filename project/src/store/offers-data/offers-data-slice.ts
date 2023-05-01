@@ -16,7 +16,7 @@ const initialState: OffersData = {
   favorites: [],
 };
 
-const sortOffers = (filteredOffers: Offer[], sortType: OfferSortType): Offer[] => {
+export const sortOffers = (filteredOffers: Offer[], sortType: OfferSortType): Offer[] => {
   const currentSortType = SORT_TYPE_ACTIONS.find((type) => type.sortType === sortType);
 
   switch (sortType) {
@@ -50,7 +50,6 @@ export const offersData = createSlice({
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.isOffersDataLoading = false;
         state.offers = action.payload;
-        // state.city = 'Paris';
         state.hasError = false;
         state.filteredOffers = state.offers.filter((offer) => offer.city?.name === state.city);
         state.filteredOffers = sortOffers(state.filteredOffers, state.sortType);
