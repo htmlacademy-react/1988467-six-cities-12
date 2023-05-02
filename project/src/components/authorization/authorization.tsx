@@ -1,19 +1,23 @@
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { logoutAction } from '../../store/actions/api-actions';
-import { getLogin } from '../../store/user-process/user-process-selectors';
+import { fetchLoginAction, logoutAction } from '../../store/actions/api-actions';
+import { getAuthorizationStatus, getLogin } from '../../store/user-process/user-process-selectors';
 import { getFavorites } from '../../store/offers-data/offers-data-selectors';
+import { useEffect } from 'react';
 
-type AuthorizationProps = {
-  authorizationStatus: AuthorizationStatus;
-}
-
-function Authorization({ authorizationStatus }: AuthorizationProps): JSX.Element {
+function Authorization(): JSX.Element {
   const dispatch = useAppDispatch();
 
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const loginEmail = useAppSelector(getLogin);
   const favoriteOffers = useAppSelector(getFavorites);
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth && !loginEmail) {
+      dispatch(fetchLoginAction());
+    }
+  }, [dispatch, authorizationStatus, loginEmail]);
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return (

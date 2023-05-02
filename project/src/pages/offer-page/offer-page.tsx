@@ -13,16 +13,16 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCommentsAction, fetchNearPlacesAction, fetchSelectedOfferAction, sendFavoriteStatusAction } from '../../store/actions/api-actions';
 import { store } from '../../store';
 import Authorization from '../../components/authorization/authorization';
-import { getComments, getSelectedOffer } from '../../store/current-offer-data/curret-offer-data-selectors';
+import { getComments, getNearPlaces, getSelectedOffer } from '../../store/current-offer-data/curret-offer-data-selectors';
+import { getCity } from '../../store/offers-data/offers-data-selectors';
+import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
+import NotFoundPage from '../not-found-page/not-found-page';
 
-type Props = {
-  offers: Offer[];
-  selectedCity: string;
-  authorizationStatus: AuthorizationStatus;
-}
-
-function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.Element {
+function OfferPage(): JSX.Element {
   const { id: offerId } = useParams<{ id: string }>();
+  const offers = useAppSelector(getNearPlaces);
+  const selectedCity = useAppSelector(getCity);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
     store.dispatch(fetchNearPlacesAction(Number(offerId)));
@@ -63,6 +63,12 @@ function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.El
     }
   };
 
+  if (!offer) {
+    return (
+      <NotFoundPage />
+    );
+  }
+
   return (
     <div className="page">
       <Helmet>
@@ -73,7 +79,7 @@ function OfferPage({ offers, selectedCity, authorizationStatus }: Props): JSX.El
           <div className="header__wrapper">
             <Logo />
             <nav className="header__nav">
-              <Authorization authorizationStatus={authorizationStatus} />
+              <Authorization />
             </nav>
           </div>
         </div>

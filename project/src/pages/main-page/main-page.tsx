@@ -2,8 +2,8 @@ import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Logo from '../../components/logo/logo';
 import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
-import { AuthorizationStatus, CITIES_DATA } from '../../const';
-import { useState } from 'react';
+import { CITIES_DATA } from '../../const';
+import { useEffect, useState } from 'react';
 import { CLASS_NAME_LIST, MAP_SIZE } from '../../const';
 import CitiesList from '../../components/cities-list/cities-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -12,19 +12,27 @@ import { CityFilter } from '../../types/city';
 import { OfferSortType } from '../../types/sort';
 import Authorization from '../../components/authorization/authorization';
 import { changeCityAction, changeSortTypeAction } from '../../store/offers-data/offers-data-slice';
-import { getErrorStatus } from '../../store/offers-data/offers-data-selectors';
+import { getCity, getErrorStatus, getFilteredOffers, getOffersDataLoadingStatus, getSortType } from '../../store/offers-data/offers-data-selectors';
 import EmptyMainPage from '../empty-main-page/empty-main-page';
+import { fetchOffersAction } from '../../store/actions/api-actions';
+import LoadingScreen from '../loading-screen/loading-screen';
 
-type MainPageProps = {
-  rentalOffersCount: number;
-  offers: Offer[];
-  selectedCity: CityFilter;
-  selectedSortType: OfferSortType;
-  authorizationStatus: AuthorizationStatus;
-}
+function MainPage(): JSX.Element {
+  const dispatch = useAppDispatch();
 
-function MainPage({ rentalOffersCount, offers, selectedCity, selectedSortType, authorizationStatus }: MainPageProps): JSX.Element {
+
+  const offers = useAppSelector(getFilteredOffers);
   const hasError = useAppSelector(getErrorStatus);
+  const selectedCity = useAppSelector(getCity);
+  const selectedSortType = useAppSelector(getSortType);
+  const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
+
+  const rentalOffersCount = offers.length;
+
+  useEffect(() => {
+    dispatch(fetchOffersAction());
+  }, [dispatch]);
+
   const [activeCard, setActiveCard] = useState<Offer | undefined>(undefined);
 
   const currentCity = CITIES_DATA.find((cityToFind) => cityToFind.name === selectedCity);
@@ -34,7 +42,7 @@ function MainPage({ rentalOffersCount, offers, selectedCity, selectedSortType, a
     setActiveCard(currentCard);
   };
 
-  const dispatch = useAppDispatch();
+
   const onCityChange = (city: CityFilter) => dispatch(changeCityAction(city));
   const onSortTypeChange = (sortType: OfferSortType) => dispatch(changeSortTypeAction(sortType));
 
@@ -42,7 +50,13 @@ function MainPage({ rentalOffersCount, offers, selectedCity, selectedSortType, a
 
   if (hasError) {
     return (
-      <EmptyMainPage authorizationStatus={authorizationStatus} onCityChange={onCityChange} selectedCity={selectedCity} />
+      <EmptyMainPage selectedCity={selectedCity} onCityChange={onCityChange} />
+    );
+  }
+
+  if (isOffersDataLoading) {
+    return (
+      <LoadingScreen />
     );
   }
 
@@ -53,7 +67,7 @@ function MainPage({ rentalOffersCount, offers, selectedCity, selectedSortType, a
           <div className="header__wrapper">
             <Logo />
             <nav className="header__nav">
-              <Authorization authorizationStatus={authorizationStatus} />
+              <Authorization />
             </nav>
           </div>
         </div>

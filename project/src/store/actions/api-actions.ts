@@ -7,7 +7,7 @@ import { AuthData } from '../../types/auth-data';
 import { AuthInfo } from '../../types/user-data';
 import { dropToken, saveToken } from '../../services/token';
 import { NewComment, Review } from '../../types/review';
-import { changeCityAction } from '../offers-data/offers-data-slice';
+// import { changeCityAction } from '../offers-data/offers-data-slice';
 
 export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;
@@ -17,7 +17,7 @@ export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
   'fetchOffers',
   async (_arg, { dispatch, extra: api }) => {
     const { data } = await api.get<Offer[]>(APIRoute.Offers);
-    dispatch(changeCityAction('Paris'));
+    // dispatch(changeCityAction('Paris'));
     return data;
   }
 );
@@ -106,7 +106,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   }
 );
 
-type NewCommentParams = NewComment & { onSuccess(): void }
+type NewCommentParams = NewComment & { onSuccess(): void; onError(): void }
 
 export const sendNewCommentAction = createAsyncThunk<void, NewCommentParams, {
   dispatch: AppDispatch;
@@ -114,9 +114,13 @@ export const sendNewCommentAction = createAsyncThunk<void, NewCommentParams, {
   extra: AxiosInstance;
 }>(
   'sendNewComment',
-  async ({ comment, rating, offerId, onSuccess }, { extra: api }) => {
-    await api.post<NewComment>(`/comments/${offerId}`, { comment, rating });
-    onSuccess();
+  async ({ comment, rating, offerId, onSuccess, onError }, { extra: api }) => {
+    try {
+      await api.post<NewComment>(`/comments/${offerId}`, { comment, rating });
+      onSuccess();
+    } catch (e) {
+      onError();
+    }
   }
 );
 

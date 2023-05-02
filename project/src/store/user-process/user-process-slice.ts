@@ -8,7 +8,7 @@ const token = getToken();
 
 const initialState: UserProcess = {
   authorizationStatus: token ? AuthorizationStatus.Auth : AuthorizationStatus.NoAuth,
-  login: null,
+  login: '',
 };
 
 export const userProcess = createSlice({

@@ -9,11 +9,12 @@ type RatingProps = {
   rating: RatingOption;
   selectedRating: number;
   onChange: (rating: number) => void;
+  isDisabledForm: boolean;
 };
 
-function RatingItem({ rating, selectedRating, onChange }: RatingProps) {
+function RatingItem({ rating, selectedRating, onChange, isDisabledForm }: RatingProps) {
   const id = `${rating.value}-${rating.value > 1 ? 'stars' : 'star'}`;
-  const checked = Boolean(rating.value === selectedRating);
+  const checked = Boolean((rating.value === selectedRating));
   return (
     <>
       <input
@@ -24,11 +25,12 @@ function RatingItem({ rating, selectedRating, onChange }: RatingProps) {
         id={id}
         type="radio"
         defaultChecked={checked}
+        // disabled={isDisabledForm}
         onClick={() => onChange(rating.value)}
       />
       <label htmlFor={id} className="reviews__rating-label form__rating-label" title={rating.title}>
         <svg className="form__star-image" width="37" height="33">
-          <use xlinkHref="#icon-star"></use>
+          <use xlinkHref="#icon-star" style={{ fill: `${isDisabledForm === true ? '#c7c7c7' : ''}` }}></use>
         </svg>
       </label>
     </>
