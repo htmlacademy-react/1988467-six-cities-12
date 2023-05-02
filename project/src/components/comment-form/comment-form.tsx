@@ -36,6 +36,9 @@ function CommentForm({ offerId }: CommentFormProps) {
         setComment('');
         dispatch(fetchCommentsAction(Number(offerId)));
         setDisabled(false);
+      },
+      onError: () => {
+        setDisabled(false);
       }
     }));
   };
